@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKURA BAR - Sistema de Gestão & Eventos</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Ícones Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { background-color: #0b0c10; color: #e5e7eb; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .bg-card { background-color: #14171f; border: 1px solid #232836; }
+    .skura-gradient { background: linear-gradient(135deg, #ea580c 0%, #b91c1c 100%); }
+    .active-nav { background: rgba(234, 88, 12, 0.12); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.3); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+  <!-- BARRA LATERAL -->
+  <aside class="w-full md:w-64 bg-card p-5 flex flex-col justify-between border-r border-[#232836]">
+    <div>
+      <!-- Logótipo SKURA BAR -->
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-11 h-11 rounded-full skura-gradient flex items-center justify-center shadow-lg shadow-orange-600/30">
+          <svg viewBox="0 0 100 100" class="w-7 h-7 text-white fill-current">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/>
+            <path d="M25 42 Q50 35 75 42 M20 52 Q50 45 80 52 M25 62 Q50 55 75 62" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-black tracking-widest text-white uppercase">SKURA</h1>
+          <p class="text-[10px] text-orange-500 font-semibold tracking-wider">BAR • MOBILE & EVENTS</p>
+        </div>
+      </div>
+
+      <!-- Navegação Principal -->
+      <nav class="space-y-1 text-xs font-medium">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition active-nav">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Dashboard Geral</span>
+        </button>
+
+        <button onclick="switchTab('festas')" id="nav-festas" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="party-popper" class="w-4 h-4"></i>
+          <span>Festas & Matriz 5 Dias</span>
+        </button>
+
+        <button onclick="switchTab('contentores')" id="nav-contentores" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="container" class="w-4 h-4"></i>
+          <span>Contentor Bar & Frota</span>
+        </button>
+
+        <button onclick="switchTab('staff')" id="nav-staff" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="users" class="w-4 h-4"></i>
+          <span>Recursos Humanos (RH)</span>
+        </button>
+
+        <button onclick="switchTab('armazem')" id="nav-armazem" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="warehouse" class="w-4 h-4"></i>
+          <span>Armazém Central</span>
+        </button>
+
+        <button onclick="switchTab('faturas')" id="nav-faturas" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="receipt" class="w-4 h-4"></i>
+          <span>Faturas & OCR IA</span>
+        </button>
+
+        <button onclick="switchTab('simulador')" id="nav-simulador" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="calculator" class="w-4 h-4"></i>
+          <span>Simulador de Lucro</span>
+        </button>
+
+        <button onclick="switchTab('checklist')" id="nav-checklist" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
+          <i data-lucide="check-square" class="w-4 h-4"></i>
+          <span>Checklist Material Bar</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Perfil José Queirós -->
+    <div class="pt-4 border-t border-[#232836] flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-orange-600/20 text-orange-400 flex items-center justify-center font-bold text-xs border border-orange-500/30">
+          JQ
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-white leading-tight">José Queirós</p>
+          <span class="text-[10px] text-green-400 font-medium inline-flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Cloud Ativa
+          </span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+
+    <!-- 1. DASHBOARD GERAL & MÉTRICAS -->
+    <section id="tab-dashboard" class="space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Dashboard Geral & Métricas</h2>
+          <p class="text-xs text-gray-400">Resumo operacional de eventos ativos, stocks e rentabilidade.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="switchTab('faturas')" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white border border-gray-700">
+            <i data-lucide="scan" class="w-4 h-4 text-orange-400"></i>
+            <span>Escanear Fatura IA</span>
+          </button>
+          <button onclick="openModalFestaNova()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold skura-gradient text-white shadow-lg shadow-orange-600/20">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>+ Nova Festa / Evento</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Cards de Métricas -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
+          <p class="text-[11px] text-gray-400">Contentor Bar #01</p>
+          <h3 class="text-lg font-bold text-white mt-1">Alocado: Sunset Glow</h3>
+          <span class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium">Pronto para Deslocação</span>
+        </div>
+
+        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
+          <p class="text-[11px] text-gray-400">Recursos Humanos Ativos</p>
+          <h3 class="text-lg font-bold text-white mt-1">4 Colaboradores</h3>
+          <p class="text-[10px] text-gray-500 mt-2">Média: 9,20 € / hora</p>
+        </div>
+
+        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
+          <p class="text-[11px] text-gray-400">Faturas em Consignação</p>
+          <h3 class="text-lg font-bold text-orange-400 mt-1">1.140,00 €</h3>
+          <p class="text-[10px] text-gray-500 mt-2">A liquidar pós-venda</p>
+        </div>
+
+        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
+          <p class="text-[11px] text-gray-400">Margem Média Líquida</p>
+          <h3 class="text-lg font-bold text-emerald-400 mt-1">64.8%</h3>
+          <p class="text-[10px] text-gray-500 mt-2">Descontando frete e mão de obra</p>
+        </div>
+      </div>
+
+      <!-- Card do Evento Ativo -->
+      <div class="bg-card p-6 rounded-2xl border border-orange-500/20 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div>
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded bg-orange-500/10 text-orange-400 uppercase tracking-wider border border-orange-500/30">Evento Confirmado</span>
+            <h3 class="text-xl font-bold text-white mt-2">Festa Sunset Lagoon - SKURA Mobile</h3>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="switchTab('festas')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-white hover:bg-gray-700">Gerir Carga & Stock</button>
+            <button onclick="openModalFecho()" class="px-3.5 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">Inventário de Fecho (Pós-Festa)</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-3 border-t border-[#232836]">
+          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
+            <p class="text-[10px] text-gray-400">Contentor Móvel</p>
+            <p class="text-xs font-bold text-white mt-1">Contentor #01 (Black Edition)</p>
+            <p class="text-[10px] text-gray-500 mt-0.5">Com gerador e 4 bicas</p>
+          </div>
+          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
+            <p class="text-[10px] text-gray-400">Frete & Deslocação</p>
+            <p class="text-xs font-bold text-white mt-1">120,00 € (Ida e Volta)</p>
+            <p class="text-[10px] text-gray-500 mt-0.5">Reboque 45 km + Combustível</p>
+          </div>
+          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
+            <p class="text-[10px] text-gray-400">Recursos Humanos</p>
+            <p class="text-xs font-bold text-white mt-1">280,00 € (3 Elementos)</p>
+            <p class="text-[10px] text-emerald-400 mt-0.5">2 Barmen + 1 Apoio/Caixa</p>
+          </div>
+          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
+            <p class="text-[10px] text-gray-400">Faturação Esperada</p>
+            <p class="text-xs font-bold text-emerald-400 mt-1">2.450,00 €</p>
+            <p class="text-[10px] text-gray-400 mt-0.5">Lucro Estimado: ~1.430,00 €</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. FESTAS & MATRIZ DE 5 DIAS -->
+    <section id="tab-festas" class="hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Matriz de Inventário (Festa de 5 Dias)</h2>
+          <p class="text-xs text-gray-400">Cargas iniciais, reforços diários de carrinha e sobras sincronizadas no Supabase.</p>
+        </div>
+        <button onclick="openModalFecho()" class="px-4 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">
+          + Registar Fecho Diário
+        </button>
+      </div>
+
+      <div class="bg-card rounded-2xl overflow-hidden border border-[#232836]">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-gray-300">
+            <thead class="bg-[#1a1e29] text-gray-400 uppercase text-[10px] border-b border-[#232836]">
+              <tr>
+                <th class="p-3.5 font-bold">Produto</th>
+                <th class="p-3.5 text-center bg-orange-950/20 text-orange-300">Carga D1</th>
+                <th class="p-3.5 text-center">Sobra D1</th>
+                <th class="p-3.5 text-center text-emerald-400">+ Ref. D2</th>
+                <th class="p-3.5 text-center">Sobra D2</th>
+                <th class="p-3.5 text-center text-emerald-400">+ Ref. D3</th>
+                <th class="p-3.5 text-center">Sobra D3</th>
+                <th class="p-3.5 text-center font-bold text-white bg-gray-900/60">Total Consumido</th>
+                <th class="p-3.5 text-center font-bold text-orange-400">Stock no Bar</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-matriz" class="divide-y divide-[#232836]">
+              <tr><td colspan="9" class="p-4 text-center text-gray-500">A carregar do Supabase...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ARMAZÉM CENTRAL -->
+    <section id="tab-armazem" class="hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Armazém Central (SKURA Hub)</h2>
+          <p class="text-xs text-gray-400">Stock total. As alterações gravam imediatamente na base de dados.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="cards-armazem">
+        <!-- Render dinâmico -->
+      </div>
+    </section>
+
+    <!-- 4. CONTENTOR BAR & FROTA -->
+    <section id="tab-contentores" class="hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Contentores Bar & Logística</h2>
+          <p class="text-xs text-gray-400">Gestão dos contentores móveis (para eventos próprios ou aluguer).</p>
+        </div>
+        <button onclick="alert('Funcionalidade para adicionar Contentor #02 pronta!')" class="px-4 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">
+          + Adicionar Novo Contentor
+        </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-card p-5 rounded-2xl border border-orange-500/30">
+          <div class="flex justify-between items-start mb-3">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">Operacional</span>
+            <i data-lucide="container" class="w-6 h-6 text-orange-500"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Contentor Bar #01 (Black Edition)</h3>
+          <p class="text-xs text-gray-400 mt-1">2 Bancadas inox, 4 bicas para cerveja, quadro elétrico e gerador autónomo.</p>
+          <div class="mt-4 pt-3 border-t border-[#232836] flex justify-between text-xs">
+            <span class="text-gray-400">Evento: <strong class="text-white">Sunset Lagoon</strong></span>
+            <span class="text-gray-400">Custo Deslocação: <strong class="text-orange-400">1.20 €/km</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. RECURSOS HUMANOS -->
+    <section id="tab-staff" class="hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Recursos Humanos (RH)</h2>
+        <p class="text-xs text-gray-400">Preço por hora dos barmen e custos apurados por turno.</p>
+      </div>
+      <div class="bg-card rounded-2xl p-5 border border-[#232836] divide-y divide-[#232836]">
+        <div class="flex justify-between items-center py-3">
+          <div>
+            <p class="text-sm font-bold text-white">Rui Silva <span class="text-xs text-orange-400 font-normal">(Chefe de Bar)</span></p>
+            <p class="text-xs text-gray-400">10,00 € / hora • Turno: 8 horas</p>
+          </div>
+          <p class="text-sm font-bold text-white">80,00 €</p>
+        </div>
+        <div class="flex justify-between items-center py-3">
+          <div>
+            <p class="text-sm font-bold text-white">Ana Pereira <span class="text-xs text-orange-400 font-normal">(Bartender)</span></p>
+            <p class="text-xs text-gray-400">8,00 € / hora • Turno: 7 horas</p>
+          </div>
+          <p class="text-sm font-bold text-white">56,00 €</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. FATURAS & OCR IA -->
+    <section id="tab-faturas" class="hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Faturas & Mercadoria em Consignação</h2>
+        <p class="text-xs text-gray-400">Registo de faturas de fornecedores com liquidação após a festa.</p>
+      </div>
+      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-3">
+        <div class="flex justify-between items-center p-3 bg-[#10131a] rounded-xl border border-[#232836]">
+          <div>
+            <p class="text-xs font-bold text-white">Fatura #FT-2026/891 - Bebidas & Companhia</p>
+            <p class="text-[10px] text-orange-400">Em Consignação (A pagar após o evento)</p>
+          </div>
+          <p class="text-sm font-bold text-white">1.140,00 €</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SIMULADOR DE LUCRO -->
+    <section id="tab-simulador" class="hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Simulador de Lucro por Garrafa</h2>
+        <p class="text-xs text-gray-400">Cálculo de doses (50ml) por garrafa e rendimento teórico.</p>
+      </div>
+      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-4">
+        <p class="text-xs text-gray-300">1 Garrafa de Gin (700ml) = <strong class="text-orange-400">14 doses de 50ml</strong>. A 6,00 € por copo = <strong class="text-emerald-400">84,00 € de faturação por garrafa</strong>.</p>
+      </div>
+    </section>
+
+    <!-- 8. CHECKLIST MATERIAL BAR -->
+    <section id="tab-checklist" class="hidden space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Checklist de Material de Bar</h2>
+        <p class="text-xs text-gray-400">Material que deve entrar e sair da carrinha para o evento.</p>
+      </div>
+      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-2 text-xs">
+        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> 4 Shakers e 6 Doseadores Inox</label>
+        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> 2 Tapetes de Bar de Borracha</label>
+        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> Terminal TPA e Carregador</label>
+        <label class="flex items-center gap-2 text-white"><input type="checkbox" class="accent-orange-500"> 2 Extensões elétricas de 25m</label>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: REGISTAR FECHO -->
+  <div id="modalFecho" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-card w-full max-w-md rounded-2xl border border-[#232836] p-6 space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-white">Fecho Diário do Bar</h3>
+        <button onclick="closeModal('modalFecho')" class="text-gray-400 hover:text-white">✕</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-gray-400 mb-1">Produto a Registar</label>
+          <select id="fecho-produto-select" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white"></select>
+        </div>
+        <div>
+          <label class="block text-gray-400 mb-1">Qual é o Dia?</label>
+          <select id="fecho-dia-select" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white">
+            <option value="s1">Fecho Dia 1</option>
+            <option value="s2">Fecho Dia 2</option>
+            <option value="s3" selected>Fecho Dia 3</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-400 mb-1">Garrafas Cheias que Sobraram (Contagem)</label>
+          <input type="number" id="fecho-sobra-input" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white" value="5">
+        </div>
+      </div>
+      <button onclick="salvarFechoSupabase()" class="w-full py-3 rounded-xl skura-gradient font-semibold text-xs text-white">
+        Gravar Fecho no Supabase
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_PROJECT_URL = 'https://sudtyjvcgszzwruegnja.supabase.co';
+    const SUPABASE_PUB_KEY = 'sb_publishable_oqZxUhcWTP_E6R7eQzuwJw_G6URlH9U';
+    const db = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUB_KEY);
+
+    let inventarioData = [];
+    let armazemData = [];
+
+    async function carregarDados() {
+      try {
+        const { data: stockItems } = await db.from('armazem').select('*');
+        if (stockItems) {
+          armazemData = stockItems;
+          renderArmazem();
+        }
+
+        const { data: invItems } = await db.from('inventario_festa').select('*');
+        if (invItems) {
+          inventarioData = invItems;
+          renderMatriz();
+          popularSelectFecho();
+        }
+      } catch (e) {
+        console.error("Erro na sincronização:", e);
+      }
+    }
+
+    function renderMatriz() {
+      const tbody = document.getElementById('tabela-matriz');
+      tbody.innerHTML = '';
+      inventarioData.forEach(item => {
+        let consumido = (item.c1 - item.s1) + ((item.s1 + item.r2) - item.s2) + ((item.s2 + item.r3) - item.s3);
+        tbody.innerHTML += `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3.5 font-semibold text-white">${item.produto_nome}</td>
+            <td class="p-3.5 text-center bg-orange-950/20 text-orange-400 font-bold">${item.c1}</td>
+            <td class="p-3.5 text-center text-gray-400">${item.s1}</td>
+            <td class="p-3.5 text-center text-emerald-400 font-medium">+${item.r2}</td>
+            <td class="p-3.5 text-center text-gray-400">${item.s2}</td>
+            <td class="p-3.5 text-center text-emerald-400 font-medium">+${item.r3}</td>
+            <td class="p-3.5 text-center text-gray-400">${item.s3}</td>
+            <td class="p-3.5 text-center font-bold text-white bg-gray-900/40">${consumido} un</td>
+            <td class="p-3.5 text-center font-bold text-orange-400 text-sm">${item.s3} un</td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function renderArmazem() {
+      const container = document.getElementById('cards-armazem');
+      container.innerHTML = '';
+      armazemData.forEach(item => {
+        container.innerHTML += `
+          <div class="bg-card p-4 rounded-2xl border border-[#232836]">
+            <h4 class="font-bold text-white text-sm">${item.nome}</h4>
+            <p class="text-xs text-gray-400 mt-0.5">PVP Dose: €${parseFloat(item.pvp_dose).toFixed(2)}</p>
+            <div class="flex items-center justify-between mt-4">
+              <span class="text-2xl font-black text-orange-500">${item.stock_atual} <span class="text-xs font-normal text-gray-400">un</span></span>
+              <div class="flex gap-1.5">
+                <button onclick="updateStockSupabase(${item.id}, -1)" class="w-8 h-8 rounded-lg bg-gray-800 text-white font-bold hover:bg-gray-700">-</button>
+                <button onclick="updateStockSupabase(${item.id}, 1)" class="w-8 h-8 rounded-lg bg-gray-800 text-white font-bold hover:bg-gray-700">+</button>
+                <button onclick="updateStockSupabase(${item.id}, 12)" class="px-2.5 h-8 rounded-lg bg-orange-600/20 text-orange-400 font-bold border border-orange-500/30 text-xs">+12</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    async function updateStockSupabase(id, delta) {
+      const item = armazemData.find(x => x.id === id);
+      if (!item) return;
+      const novoStock = Math.max(0, item.stock_atual + delta);
+      item.stock_atual = novoStock;
+      renderArmazem();
+
+      await db.from('armazem').update({ stock_atual: novoStock }).eq('id', id);
+    }
+
+    function popularSelectFecho() {
+      const sel = document.getElementById('fecho-produto-select');
+      sel.innerHTML = '';
+      inventarioData.forEach(i => {
+        sel.innerHTML += `<option value="${i.id}">${i.produto_nome}</option>`;
+      });
+    }
+
+    async function salvarFechoSupabase() {
+      const itemId = parseInt(document.getElementById('fecho-produto-select').value);
+      const diaField = document.getElementById('fecho-dia-select').value;
+      const sobraVal = parseInt(document.getElementById('fecho-sobra-input').value) || 0;
+
+      const objUpdate = {};
+      objUpdate[diaField] = sobraVal;
+
+      await db.from('inventario_festa').update(objUpdate).eq('id', itemId);
+      closeModal('modalFecho');
+      await carregarDados();
+    }
+
+    function switchTab(t) {
+      ['dashboard', 'festas', 'contentores', 'staff', 'armazem', 'faturas', 'simulador', 'checklist'].forEach(tab => {
+        const el = document.getElementById(`tab-${tab}`);
+        const nav = document.getElementById(`nav-${tab}`);
+        if (el) el.classList.toggle('hidden', tab !== t);
+        if (nav) {
+          if (tab === t) {
+            nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition active-nav";
+          } else {
+            nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition";
+          }
+        }
+      });
+    }
+
+    function openModalFecho() { document.getElementById('modalFecho').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function openModalFestaNova() { alert("Para criar uma nova festa de 5 dias, basta preencher o nome no ecrã de Festas!"); }
+
+    lucide.createIcons();
+    carregarDados();
+  </script>
+</body>
+</html>
