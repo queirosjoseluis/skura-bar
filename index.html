@@ -1,485 +1,69 @@
-<!DOCTYPE html>
-<html lang="pt">
+<!doctype html>
+<html lang="pt-PT">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKURA BAR - Sistema de Gestão & Eventos</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Ícones Lucide -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#171717" />
+  <title>SKURA BAR — Gestão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { background-color: #0b0c10; color: #e5e7eb; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .bg-card { background-color: #14171f; border: 1px solid #232836; }
-    .skura-gradient { background: linear-gradient(135deg, #ea580c 0%, #b91c1c 100%); }
-    .active-nav { background: rgba(234, 88, 12, 0.12); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.3); }
+    :root{--ink:#171717;--muted:#85827f;--line:#efedea;--paper:#fff;--canvas:#f8f7f5;--orange:#e7551d;--orange-light:#fff1e9;--green:#22845d;--shadow:0 12px 36px #211a1410}
+    *{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:14px}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:flex}.sidebar{width:252px;background:#191919;color:#fff;display:flex;flex-direction:column;padding:24px 16px 18px;position:fixed;inset:0 auto 0 0;z-index:5}.brand{height:68px;display:flex;align-items:center;gap:12px;padding:0 10px 18px;border-bottom:1px solid #ffffff16}.brand img{width:48px;height:48px;object-fit:contain;border-radius:12px;background:#fff}.brand-name{font-family:Manrope,sans-serif;font-weight:800;font-size:15px;letter-spacing:.11em}.brand-sub{color:#aaa;font-size:10px;letter-spacing:.18em;margin-top:3px}.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#777;margin:25px 11px 9px}.nav{display:grid;gap:4px}.nav button{border:0;background:none;color:#b9b7b5;text-align:left;display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;font-size:13px;transition:.18s}.nav button:hover{background:#ffffff0c;color:#fff}.nav button.active{background:#e7551d;color:white;font-weight:600}.nav svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.nav .badge{margin-left:auto;background:#ffffff20;border-radius:10px;padding:2px 7px;font-size:10px}.sidebar-bottom{margin-top:auto}.assistant-teaser{background:#242321;border:1px solid #ffffff12;border-radius:12px;padding:14px;margin:14px 2px 18px}.teaser-top{display:flex;align-items:center;gap:9px;font-weight:600;font-size:12px}.spark{color:#ff946b;font-size:16px}.assistant-teaser p{font-size:11px;color:#aaa;line-height:1.55;margin:9px 0 12px}.teaser-link{background:none;border:0;color:#ff986f;padding:0;font-size:11px;font-weight:600}.profile{display:flex;align-items:center;gap:10px;border-top:1px solid #ffffff16;padding:16px 8px 0}.avatar{width:31px;height:31px;border-radius:50%;background:#373532;display:grid;place-items:center;font-size:11px;color:#fff}.profile strong{display:block;font-size:12px;font-weight:500}.profile small{color:#888;font-size:10px}.main{margin-left:252px;width:calc(100% - 252px)}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 42px;position:sticky;top:0;z-index:4}.crumb{font-size:12px;color:var(--muted)}.crumb b{color:#242321;font-weight:600}.top-actions{display:flex;align-items:center;gap:17px}.today{font-size:12px;color:var(--muted)}.icon-btn{border:1px solid var(--line);background:#fff;width:35px;height:35px;border-radius:9px;display:grid;place-items:center;color:#65615c}.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7}.content{max-width:1320px;margin:auto;padding:36px 42px 58px}.welcome{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:27px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--orange);font-weight:700;margin-bottom:9px}.welcome h1{font-family:Manrope,sans-serif;font-size:28px;letter-spacing:-.04em;margin:0;font-weight:700}.welcome p{margin:8px 0 0;color:var(--muted);font-size:13px}.primary{border:0;background:var(--orange);color:white;font-weight:600;padding:11px 15px;border-radius:8px;box-shadow:0 5px 12px #e7551d20;display:inline-flex;align-items:center;gap:8px}.primary:hover{background:#cf4613}.primary svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}.secondary{background:#fff;color:#393633;border:1px solid var(--line);padding:10px 13px;border-radius:8px;font-weight:600}.grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,1fr);margin-bottom:20px}.stat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:17px 18px;min-height:107px}.stat-head{display:flex;justify-content:space-between;align-items:center;color:#706d69;font-size:11px}.stat-icon{width:29px;height:29px;border-radius:8px;background:#f6f4f1;display:grid;place-items:center;color:#716c66}.stat-icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}.stat-value{font-family:Manrope,sans-serif;font-weight:700;font-size:23px;margin-top:10px;letter-spacing:-.04em}.stat-foot{font-size:10px;color:#9a9691;margin-top:2px}.overview{grid-template-columns:1.5fr 1fr;margin-bottom:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;padding:17px 19px;border-bottom:1px solid #f3f1ef}.panel-title{font-family:Manrope,sans-serif;font-weight:700;font-size:13px}.panel-note{font-size:11px;color:var(--muted);margin-top:4px}.text-link{background:none;border:0;color:var(--orange);font-size:11px;font-weight:600;padding:4px}.empty{padding:29px 20px 31px;text-align:center}.empty-art{width:48px;height:48px;border-radius:14px;background:#fff2eb;color:var(--orange);display:grid;place-items:center;margin:0 auto 12px}.empty-art svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.empty h3{font-size:12px;margin:0 0 6px;font-weight:700}.empty p{font-size:11px;color:var(--muted);line-height:1.55;margin:0 auto 14px;max-width:290px}.empty .secondary{font-size:11px;padding:8px 11px}.setup{padding:17px 19px 18px}.setup-row{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #f3f1ef}.setup-row:last-child{border:0;padding-bottom:0}.check{width:20px;height:20px;border:1px solid #e4e0db;border-radius:50%;display:grid;place-items:center;color:#aaa;font-size:10px}.setup-row strong{display:block;font-size:11px;font-weight:600}.setup-row small{font-size:10px;color:var(--muted);display:block;margin-top:3px}.setup-row .arrow{margin-left:auto;color:#aaa}.section-title{font-family:Manrope,sans-serif;font-size:20px;letter-spacing:-.03em;margin:0}.page-heading{display:flex;justify-content:space-between;align-items:flex-start;margin:5px 0 24px}.page-heading p{font-size:12px;color:var(--muted);margin:7px 0 0}.toolbar{display:flex;gap:9px;align-items:center}.filter{border:1px solid var(--line);background:white;border-radius:8px;padding:10px 12px;color:#6c6864;font-size:11px}.table-wrap{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}.table-top{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}.table-top strong{font-size:12px}.search{border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-size:11px;min-width:180px;outline:none}.search:focus,input:focus{border-color:#e88e68}.table-empty{padding:58px 20px;text-align:center}.table-empty .empty-art{margin-bottom:13px}.table-empty h3{font-size:13px;margin:0 0 6px}.table-empty p{font-size:11px;max-width:350px;color:var(--muted);line-height:1.6;margin:0 auto 15px}.feature-strip{background:#fff8f3;border:1px solid #f5e4d9;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}.feature-strip .spark{font-size:19px}.feature-strip strong{font-size:11px}.feature-strip p{font-size:11px;color:#77716b;margin:4px 0 0;line-height:1.5}.assistant-layout{display:grid;grid-template-columns:1fr 260px;gap:15px}.chat-panel{height:520px;display:flex;flex-direction:column}.chat-intro{padding:27px 28px 8px}.chat-intro .assistant-mark{width:40px;height:40px;display:grid;place-items:center;background:#fff0e8;color:var(--orange);border-radius:12px;font-size:20px;margin-bottom:16px}.chat-intro h2{font:700 18px Manrope,sans-serif;margin:0 0 7px}.chat-intro p{font-size:12px;line-height:1.6;color:var(--muted);max-width:440px;margin:0}.suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:16px 28px}.suggestions button{background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 11px;font-size:10px;color:#666}.chat-space{flex:1}.chat-disclaimer{margin:0 28px 12px;background:#fff8f3;padding:10px 12px;border-radius:7px;color:#82756c;font-size:10px;line-height:1.5}.chat-compose{display:flex;gap:8px;padding:0 19px 18px}.chat-compose input{flex:1;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:11px;outline:none}.chat-compose button{width:40px;border:0;border-radius:8px;background:var(--orange);color:white}.chat-compose button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}.chat-side{padding:18px}.chat-side h3{font-size:12px;margin:0 0 10px}.chat-side p{font-size:10px;color:var(--muted);line-height:1.55;margin:0 0 15px}.chat-side .divider{height:1px;background:var(--line);margin:16px 0}.modal-backdrop{position:fixed;inset:0;background:#17171766;z-index:10;display:none;place-items:center;padding:20px}.modal-backdrop.open{display:grid}.modal{width:min(470px,100%);background:#fff;border-radius:14px;padding:23px;box-shadow:var(--shadow)}.modal h2{font:700 18px Manrope,sans-serif;margin:0}.modal p{color:var(--muted);font-size:12px;line-height:1.5}.modal label{font-size:11px;font-weight:600;display:block;margin:15px 0 6px}.modal input,.modal select{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;outline:0;font-size:12px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}.toast{position:fixed;right:25px;bottom:24px;background:#242321;color:white;padding:12px 16px;border-radius:9px;font-size:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.2s;z-index:20}.toast.show{opacity:1;transform:translateY(0)}.mobile-menu{display:none}
+    @media(max-width:1050px){.sidebar{width:220px}.main{margin-left:220px;width:calc(100% - 220px)}.content{padding:30px 25px}.topbar{padding:0 25px}.stats{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:1fr}.assistant-layout{grid-template-columns:1fr}.chat-side{display:none}}
+    @media(max-width:680px){.sidebar{width:260px;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.topbar{height:61px;padding:0 16px}.mobile-menu{display:grid}.crumb{margin-right:auto;margin-left:10px}.today{display:none}.content{padding:25px 16px 38px}.welcome{gap:12px}.welcome h1{font-size:23px}.welcome p{font-size:12px}.welcome>.primary{font-size:0;padding:10px}.welcome>.primary svg{width:17px;height:17px}.stats{gap:9px}.stat{padding:13px;min-height:99px}.stat-value{font-size:20px}.page-heading{gap:10px;align-items:center}.page-heading .primary{font-size:0;padding:10px}.page-heading .primary svg{width:17px;height:17px}.toolbar{display:none}.search{min-width:0;width:130px}.chat-panel{height:calc(100vh - 165px);min-height:460px}.chat-intro{padding:23px 19px 5px}.suggestions{padding:14px 19px}.chat-disclaimer{margin:0 19px 10px}.chat-compose{padding:0 13px 14px}}
   </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row">
-
-  <!-- BARRA LATERAL -->
-  <aside class="w-full md:w-64 bg-card p-5 flex flex-col justify-between border-r border-[#232836]">
-    <div>
-      <!-- Logótipo SKURA BAR -->
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-11 h-11 rounded-full skura-gradient flex items-center justify-center shadow-lg shadow-orange-600/30">
-          <svg viewBox="0 0 100 100" class="w-7 h-7 text-white fill-current">
-            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/>
-            <path d="M25 42 Q50 35 75 42 M20 52 Q50 45 80 52 M25 62 Q50 55 75 62" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-lg font-black tracking-widest text-white uppercase">SKURA</h1>
-          <p class="text-[10px] text-orange-500 font-semibold tracking-wider">BAR • MOBILE & EVENTS</p>
-        </div>
-      </div>
-
-      <!-- Navegação Principal -->
-      <nav class="space-y-1 text-xs font-medium">
-        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition active-nav">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Dashboard Geral</span>
-        </button>
-
-        <button onclick="switchTab('festas')" id="nav-festas" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="party-popper" class="w-4 h-4"></i>
-          <span>Festas & Matriz 5 Dias</span>
-        </button>
-
-        <button onclick="switchTab('contentores')" id="nav-contentores" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="container" class="w-4 h-4"></i>
-          <span>Contentor Bar & Frota</span>
-        </button>
-
-        <button onclick="switchTab('staff')" id="nav-staff" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="users" class="w-4 h-4"></i>
-          <span>Recursos Humanos (RH)</span>
-        </button>
-
-        <button onclick="switchTab('armazem')" id="nav-armazem" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="warehouse" class="w-4 h-4"></i>
-          <span>Armazém Central</span>
-        </button>
-
-        <button onclick="switchTab('faturas')" id="nav-faturas" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="receipt" class="w-4 h-4"></i>
-          <span>Faturas & OCR IA</span>
-        </button>
-
-        <button onclick="switchTab('simulador')" id="nav-simulador" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="calculator" class="w-4 h-4"></i>
-          <span>Simulador de Lucro</span>
-        </button>
-
-        <button onclick="switchTab('checklist')" id="nav-checklist" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition">
-          <i data-lucide="check-square" class="w-4 h-4"></i>
-          <span>Checklist Material Bar</span>
-        </button>
-      </nav>
-    </div>
-
-    <!-- Perfil José Queirós -->
-    <div class="pt-4 border-t border-[#232836] flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-full bg-orange-600/20 text-orange-400 flex items-center justify-center font-bold text-xs border border-orange-500/30">
-          JQ
-        </div>
-        <div>
-          <p class="text-xs font-semibold text-white leading-tight">José Queirós</p>
-          <span class="text-[10px] text-green-400 font-medium inline-flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Cloud Ativa
-          </span>
-        </div>
-      </div>
-    </div>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="assets/skura-bar-logo.png" alt="Logótipo SKURA BAR"><div><div class="brand-name">SKURA BAR</div><div class="brand-sub">GESTÃO DE EVENTOS</div></div></div>
+    <div class="nav-label">Operação</div>
+    <nav class="nav" id="nav">
+      <button class="active" data-page="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Visão geral</button>
+      <button data-page="events"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>Eventos</button>
+      <button data-page="stock"><svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></svg>Produtos & stock</button>
+      <button data-page="suppliers"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h1m4 0h1m-6 4h1m4 0h1m-5 7v-4h2v4"/></svg>Fornecedores & faturas</button>
+      <button data-page="team"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6m3-3h-6"/></svg>Equipa & horários</button>
+      <button data-page="expenses"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg>Despesas</button>
+    </nav>
+    <div class="nav-label">Gestão</div>
+    <nav class="nav">
+      <button data-page="analysis"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M8 15l4-4 3 3 6-7"/></svg>Análise & margens</button>
+      <button data-page="assistant"><svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="5"/></svg>Assistente IA<span class="badge">IA</span></button>
+      <button data-page="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.8Z" transform="translate(-1 -1) scale(1.08)"/></svg>Definições</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="assistant-teaser"><div class="teaser-top"><span class="spark">✳</span> O teu assistente SKURA</div><p>Pergunta sobre stock, custos, eventos e margens com base nos teus dados.</p><button class="teaser-link" data-goto="assistant">Abrir assistente →</button></div><div class="profile"><div class="avatar">SB</div><div><strong>Área de gestão</strong><small>Administrador</small></div></div></div>
   </aside>
-
-  <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
-  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-
-    <!-- 1. DASHBOARD GERAL & MÉTRICAS -->
-    <section id="tab-dashboard" class="space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Dashboard Geral & Métricas</h2>
-          <p class="text-xs text-gray-400">Resumo operacional de eventos ativos, stocks e rentabilidade.</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="switchTab('faturas')" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white border border-gray-700">
-            <i data-lucide="scan" class="w-4 h-4 text-orange-400"></i>
-            <span>Escanear Fatura IA</span>
-          </button>
-          <button onclick="openModalFestaNova()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold skura-gradient text-white shadow-lg shadow-orange-600/20">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>+ Nova Festa / Evento</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 4 Cards de Métricas -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
-          <p class="text-[11px] text-gray-400">Contentor Bar #01</p>
-          <h3 class="text-lg font-bold text-white mt-1">Alocado: Sunset Glow</h3>
-          <span class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium">Pronto para Deslocação</span>
-        </div>
-
-        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
-          <p class="text-[11px] text-gray-400">Recursos Humanos Ativos</p>
-          <h3 class="text-lg font-bold text-white mt-1">4 Colaboradores</h3>
-          <p class="text-[10px] text-gray-500 mt-2">Média: 9,20 € / hora</p>
-        </div>
-
-        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
-          <p class="text-[11px] text-gray-400">Faturas em Consignação</p>
-          <h3 class="text-lg font-bold text-orange-400 mt-1">1.140,00 €</h3>
-          <p class="text-[10px] text-gray-500 mt-2">A liquidar pós-venda</p>
-        </div>
-
-        <div class="bg-card p-4 rounded-2xl border border-[#232836]">
-          <p class="text-[11px] text-gray-400">Margem Média Líquida</p>
-          <h3 class="text-lg font-bold text-emerald-400 mt-1">64.8%</h3>
-          <p class="text-[10px] text-gray-500 mt-2">Descontando frete e mão de obra</p>
-        </div>
-      </div>
-
-      <!-- Card do Evento Ativo -->
-      <div class="bg-card p-6 rounded-2xl border border-orange-500/20 space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <div>
-            <span class="text-[10px] font-bold px-2.5 py-1 rounded bg-orange-500/10 text-orange-400 uppercase tracking-wider border border-orange-500/30">Evento Confirmado</span>
-            <h3 class="text-xl font-bold text-white mt-2">Festa Sunset Lagoon - SKURA Mobile</h3>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="switchTab('festas')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-800 text-white hover:bg-gray-700">Gerir Carga & Stock</button>
-            <button onclick="openModalFecho()" class="px-3.5 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">Inventário de Fecho (Pós-Festa)</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-3 border-t border-[#232836]">
-          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
-            <p class="text-[10px] text-gray-400">Contentor Móvel</p>
-            <p class="text-xs font-bold text-white mt-1">Contentor #01 (Black Edition)</p>
-            <p class="text-[10px] text-gray-500 mt-0.5">Com gerador e 4 bicas</p>
-          </div>
-          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
-            <p class="text-[10px] text-gray-400">Frete & Deslocação</p>
-            <p class="text-xs font-bold text-white mt-1">120,00 € (Ida e Volta)</p>
-            <p class="text-[10px] text-gray-500 mt-0.5">Reboque 45 km + Combustível</p>
-          </div>
-          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
-            <p class="text-[10px] text-gray-400">Recursos Humanos</p>
-            <p class="text-xs font-bold text-white mt-1">280,00 € (3 Elementos)</p>
-            <p class="text-[10px] text-emerald-400 mt-0.5">2 Barmen + 1 Apoio/Caixa</p>
-          </div>
-          <div class="p-3 bg-[#10131a] rounded-xl border border-[#232836]">
-            <p class="text-[10px] text-gray-400">Faturação Esperada</p>
-            <p class="text-xs font-bold text-emerald-400 mt-1">2.450,00 €</p>
-            <p class="text-[10px] text-gray-400 mt-0.5">Lucro Estimado: ~1.430,00 €</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. FESTAS & MATRIZ DE 5 DIAS -->
-    <section id="tab-festas" class="hidden space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Matriz de Inventário (Festa de 5 Dias)</h2>
-          <p class="text-xs text-gray-400">Cargas iniciais, reforços diários de carrinha e sobras sincronizadas no Supabase.</p>
-        </div>
-        <button onclick="openModalFecho()" class="px-4 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">
-          + Registar Fecho Diário
-        </button>
-      </div>
-
-      <div class="bg-card rounded-2xl overflow-hidden border border-[#232836]">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-gray-300">
-            <thead class="bg-[#1a1e29] text-gray-400 uppercase text-[10px] border-b border-[#232836]">
-              <tr>
-                <th class="p-3.5 font-bold">Produto</th>
-                <th class="p-3.5 text-center bg-orange-950/20 text-orange-300">Carga D1</th>
-                <th class="p-3.5 text-center">Sobra D1</th>
-                <th class="p-3.5 text-center text-emerald-400">+ Ref. D2</th>
-                <th class="p-3.5 text-center">Sobra D2</th>
-                <th class="p-3.5 text-center text-emerald-400">+ Ref. D3</th>
-                <th class="p-3.5 text-center">Sobra D3</th>
-                <th class="p-3.5 text-center font-bold text-white bg-gray-900/60">Total Consumido</th>
-                <th class="p-3.5 text-center font-bold text-orange-400">Stock no Bar</th>
-              </tr>
-            </thead>
-            <tbody id="tabela-matriz" class="divide-y divide-[#232836]">
-              <tr><td colspan="9" class="p-4 text-center text-gray-500">A carregar do Supabase...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. ARMAZÉM CENTRAL -->
-    <section id="tab-armazem" class="hidden space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Armazém Central (SKURA Hub)</h2>
-          <p class="text-xs text-gray-400">Stock total. As alterações gravam imediatamente na base de dados.</p>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="cards-armazem">
-        <!-- Render dinâmico -->
-      </div>
-    </section>
-
-    <!-- 4. CONTENTOR BAR & FROTA -->
-    <section id="tab-contentores" class="hidden space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Contentores Bar & Logística</h2>
-          <p class="text-xs text-gray-400">Gestão dos contentores móveis (para eventos próprios ou aluguer).</p>
-        </div>
-        <button onclick="alert('Funcionalidade para adicionar Contentor #02 pronta!')" class="px-4 py-2 rounded-xl text-xs font-semibold skura-gradient text-white">
-          + Adicionar Novo Contentor
-        </button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-card p-5 rounded-2xl border border-orange-500/30">
-          <div class="flex justify-between items-start mb-3">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">Operacional</span>
-            <i data-lucide="container" class="w-6 h-6 text-orange-500"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white">Contentor Bar #01 (Black Edition)</h3>
-          <p class="text-xs text-gray-400 mt-1">2 Bancadas inox, 4 bicas para cerveja, quadro elétrico e gerador autónomo.</p>
-          <div class="mt-4 pt-3 border-t border-[#232836] flex justify-between text-xs">
-            <span class="text-gray-400">Evento: <strong class="text-white">Sunset Lagoon</strong></span>
-            <span class="text-gray-400">Custo Deslocação: <strong class="text-orange-400">1.20 €/km</strong></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. RECURSOS HUMANOS -->
-    <section id="tab-staff" class="hidden space-y-6">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Recursos Humanos (RH)</h2>
-        <p class="text-xs text-gray-400">Preço por hora dos barmen e custos apurados por turno.</p>
-      </div>
-      <div class="bg-card rounded-2xl p-5 border border-[#232836] divide-y divide-[#232836]">
-        <div class="flex justify-between items-center py-3">
-          <div>
-            <p class="text-sm font-bold text-white">Rui Silva <span class="text-xs text-orange-400 font-normal">(Chefe de Bar)</span></p>
-            <p class="text-xs text-gray-400">10,00 € / hora • Turno: 8 horas</p>
-          </div>
-          <p class="text-sm font-bold text-white">80,00 €</p>
-        </div>
-        <div class="flex justify-between items-center py-3">
-          <div>
-            <p class="text-sm font-bold text-white">Ana Pereira <span class="text-xs text-orange-400 font-normal">(Bartender)</span></p>
-            <p class="text-xs text-gray-400">8,00 € / hora • Turno: 7 horas</p>
-          </div>
-          <p class="text-sm font-bold text-white">56,00 €</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. FATURAS & OCR IA -->
-    <section id="tab-faturas" class="hidden space-y-6">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Faturas & Mercadoria em Consignação</h2>
-        <p class="text-xs text-gray-400">Registo de faturas de fornecedores com liquidação após a festa.</p>
-      </div>
-      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-3">
-        <div class="flex justify-between items-center p-3 bg-[#10131a] rounded-xl border border-[#232836]">
-          <div>
-            <p class="text-xs font-bold text-white">Fatura #FT-2026/891 - Bebidas & Companhia</p>
-            <p class="text-[10px] text-orange-400">Em Consignação (A pagar após o evento)</p>
-          </div>
-          <p class="text-sm font-bold text-white">1.140,00 €</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. SIMULADOR DE LUCRO -->
-    <section id="tab-simulador" class="hidden space-y-6">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Simulador de Lucro por Garrafa</h2>
-        <p class="text-xs text-gray-400">Cálculo de doses (50ml) por garrafa e rendimento teórico.</p>
-      </div>
-      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-4">
-        <p class="text-xs text-gray-300">1 Garrafa de Gin (700ml) = <strong class="text-orange-400">14 doses de 50ml</strong>. A 6,00 € por copo = <strong class="text-emerald-400">84,00 € de faturação por garrafa</strong>.</p>
-      </div>
-    </section>
-
-    <!-- 8. CHECKLIST MATERIAL BAR -->
-    <section id="tab-checklist" class="hidden space-y-6">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Checklist de Material de Bar</h2>
-        <p class="text-xs text-gray-400">Material que deve entrar e sair da carrinha para o evento.</p>
-      </div>
-      <div class="bg-card p-6 rounded-2xl border border-[#232836] space-y-2 text-xs">
-        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> 4 Shakers e 6 Doseadores Inox</label>
-        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> 2 Tapetes de Bar de Borracha</label>
-        <label class="flex items-center gap-2 text-white"><input type="checkbox" checked class="accent-orange-500"> Terminal TPA e Carregador</label>
-        <label class="flex items-center gap-2 text-white"><input type="checkbox" class="accent-orange-500"> 2 Extensões elétricas de 25m</label>
-      </div>
-    </section>
+  <main class="main">
+    <header class="topbar"><button class="icon-btn mobile-menu" id="menuBtn" aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="crumb">SKURA BAR <span style="color:#ccc;margin:0 7px">/</span> <b id="breadcrumb">Visão geral</b></div><div class="top-actions"><span class="today" id="date"></span><button class="icon-btn" aria-label="Notificações" id="notice"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button></div></header>
+    <div class="content" id="content"></div>
   </main>
-
-  <!-- MODAL: REGISTAR FECHO -->
-  <div id="modalFecho" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-card w-full max-w-md rounded-2xl border border-[#232836] p-6 space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="text-lg font-bold text-white">Fecho Diário do Bar</h3>
-        <button onclick="closeModal('modalFecho')" class="text-gray-400 hover:text-white">✕</button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block text-gray-400 mb-1">Produto a Registar</label>
-          <select id="fecho-produto-select" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white"></select>
-        </div>
-        <div>
-          <label class="block text-gray-400 mb-1">Qual é o Dia?</label>
-          <select id="fecho-dia-select" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white">
-            <option value="s1">Fecho Dia 1</option>
-            <option value="s2">Fecho Dia 2</option>
-            <option value="s3" selected>Fecho Dia 3</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-gray-400 mb-1">Garrafas Cheias que Sobraram (Contagem)</label>
-          <input type="number" id="fecho-sobra-input" class="w-full bg-[#1a1e29] border border-[#232836] rounded-xl p-2.5 text-white" value="5">
-        </div>
-      </div>
-      <button onclick="salvarFechoSupabase()" class="w-full py-3 rounded-xl skura-gradient font-semibold text-xs text-white">
-        Gravar Fecho no Supabase
-      </button>
-    </div>
-  </div>
-
-  <script>
-    const SUPABASE_PROJECT_URL = 'https://sudtyjvcgszzwruegnja.supabase.co';
-    const SUPABASE_PUB_KEY = 'sb_publishable_oqZxUhcWTP_E6R7eQzuwJw_G6URlH9U';
-    const db = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUB_KEY);
-
-    let inventarioData = [];
-    let armazemData = [];
-
-    async function carregarDados() {
-      try {
-        const { data: stockItems } = await db.from('armazem').select('*');
-        if (stockItems) {
-          armazemData = stockItems;
-          renderArmazem();
-        }
-
-        const { data: invItems } = await db.from('inventario_festa').select('*');
-        if (invItems) {
-          inventarioData = invItems;
-          renderMatriz();
-          popularSelectFecho();
-        }
-      } catch (e) {
-        console.error("Erro na sincronização:", e);
-      }
-    }
-
-    function renderMatriz() {
-      const tbody = document.getElementById('tabela-matriz');
-      tbody.innerHTML = '';
-      inventarioData.forEach(item => {
-        let consumido = (item.c1 - item.s1) + ((item.s1 + item.r2) - item.s2) + ((item.s2 + item.r3) - item.s3);
-        tbody.innerHTML += `
-          <tr class="hover:bg-white/5 transition">
-            <td class="p-3.5 font-semibold text-white">${item.produto_nome}</td>
-            <td class="p-3.5 text-center bg-orange-950/20 text-orange-400 font-bold">${item.c1}</td>
-            <td class="p-3.5 text-center text-gray-400">${item.s1}</td>
-            <td class="p-3.5 text-center text-emerald-400 font-medium">+${item.r2}</td>
-            <td class="p-3.5 text-center text-gray-400">${item.s2}</td>
-            <td class="p-3.5 text-center text-emerald-400 font-medium">+${item.r3}</td>
-            <td class="p-3.5 text-center text-gray-400">${item.s3}</td>
-            <td class="p-3.5 text-center font-bold text-white bg-gray-900/40">${consumido} un</td>
-            <td class="p-3.5 text-center font-bold text-orange-400 text-sm">${item.s3} un</td>
-          </tr>
-        `;
-      });
-      lucide.createIcons();
-    }
-
-    function renderArmazem() {
-      const container = document.getElementById('cards-armazem');
-      container.innerHTML = '';
-      armazemData.forEach(item => {
-        container.innerHTML += `
-          <div class="bg-card p-4 rounded-2xl border border-[#232836]">
-            <h4 class="font-bold text-white text-sm">${item.nome}</h4>
-            <p class="text-xs text-gray-400 mt-0.5">PVP Dose: €${parseFloat(item.pvp_dose).toFixed(2)}</p>
-            <div class="flex items-center justify-between mt-4">
-              <span class="text-2xl font-black text-orange-500">${item.stock_atual} <span class="text-xs font-normal text-gray-400">un</span></span>
-              <div class="flex gap-1.5">
-                <button onclick="updateStockSupabase(${item.id}, -1)" class="w-8 h-8 rounded-lg bg-gray-800 text-white font-bold hover:bg-gray-700">-</button>
-                <button onclick="updateStockSupabase(${item.id}, 1)" class="w-8 h-8 rounded-lg bg-gray-800 text-white font-bold hover:bg-gray-700">+</button>
-                <button onclick="updateStockSupabase(${item.id}, 12)" class="px-2.5 h-8 rounded-lg bg-orange-600/20 text-orange-400 font-bold border border-orange-500/30 text-xs">+12</button>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      lucide.createIcons();
-    }
-
-    async function updateStockSupabase(id, delta) {
-      const item = armazemData.find(x => x.id === id);
-      if (!item) return;
-      const novoStock = Math.max(0, item.stock_atual + delta);
-      item.stock_atual = novoStock;
-      renderArmazem();
-
-      await db.from('armazem').update({ stock_atual: novoStock }).eq('id', id);
-    }
-
-    function popularSelectFecho() {
-      const sel = document.getElementById('fecho-produto-select');
-      sel.innerHTML = '';
-      inventarioData.forEach(i => {
-        sel.innerHTML += `<option value="${i.id}">${i.produto_nome}</option>`;
-      });
-    }
-
-    async function salvarFechoSupabase() {
-      const itemId = parseInt(document.getElementById('fecho-produto-select').value);
-      const diaField = document.getElementById('fecho-dia-select').value;
-      const sobraVal = parseInt(document.getElementById('fecho-sobra-input').value) || 0;
-
-      const objUpdate = {};
-      objUpdate[diaField] = sobraVal;
-
-      await db.from('inventario_festa').update(objUpdate).eq('id', itemId);
-      closeModal('modalFecho');
-      await carregarDados();
-    }
-
-    function switchTab(t) {
-      ['dashboard', 'festas', 'contentores', 'staff', 'armazem', 'faturas', 'simulador', 'checklist'].forEach(tab => {
-        const el = document.getElementById(`tab-${tab}`);
-        const nav = document.getElementById(`nav-${tab}`);
-        if (el) el.classList.toggle('hidden', tab !== t);
-        if (nav) {
-          if (tab === t) {
-            nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition active-nav";
-          } else {
-            nav.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition";
-          }
-        }
-      });
-    }
-
-    function openModalFecho() { document.getElementById('modalFecho').classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function openModalFestaNova() { alert("Para criar uma nova festa de 5 dias, basta preencher o nome no ecrã de Festas!"); }
-
-    lucide.createIcons();
-    carregarDados();
-  </script>
+</div>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modal"></div></div><div class="toast" id="toast"></div>
+<script>
+const icons={plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',box:'<svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10"/></svg>',calendar:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',spark:'✳'};
+const labels={dashboard:'Visão geral',events:'Eventos',stock:'Produtos & stock',suppliers:'Fornecedores & faturas',team:'Equipa & horários',expenses:'Despesas',analysis:'Análise & margens',assistant:'Assistente IA',settings:'Definições'};
+let current='dashboard';let records={events:[],stock:[],suppliers:[],team:[],expenses:[]};
+const content=document.getElementById('content');
+function action(label,fn='new'){return `<button class="primary" data-action="${fn}">${icons.plus}${label}</button>`}
+function emptyBlock(title,desc,button){return `<div class="table-wrap"><div class="table-empty"><div class="empty-art">${icons.box}</div><h3>${title}</h3><p>${desc}</p>${button||''}</div></div>`}
+function dashboard(){return `<div class="welcome"><div><div class="eyebrow">QUARTA-FEIRA, 14 DE OUTUBRO</div><h1>Bom dia. Vamos preparar o próximo evento.</h1><p>O teu espaço de gestão SKURA BAR, pronto para começares.</p></div>${action('Criar evento')}</div>
+<div class="grid stats"><div class="stat"><div class="stat-head">Eventos ativos <span class="stat-icon">${icons.calendar}</span></div><div class="stat-value">${records.events.length}</div><div class="stat-foot">Sem eventos registados</div></div><div class="stat"><div class="stat-head">Produtos no catálogo <span class="stat-icon">${icons.box}</span></div><div class="stat-value">${records.stock.length}</div><div class="stat-foot">O teu catálogo começa aqui</div></div><div class="stat"><div class="stat-head">A preparar <span class="stat-icon">◷</span></div><div class="stat-value">0</div><div class="stat-foot">Próximos eventos</div></div><div class="stat"><div class="stat-head">Margem bruta média <span class="stat-icon">↗</span></div><div class="stat-value">—</div><div class="stat-foot">Disponível após registar custos e vendas</div></div></div>
+<div class="grid overview"><section class="panel"><div class="panel-head"><div><div class="panel-title">Agenda de eventos</div><div class="panel-note">Eventos e respetivos dias de operação</div></div><button class="text-link" data-goto="events">Ver eventos →</button></div><div class="empty"><div class="empty-art">${icons.calendar}</div><h3>A agenda começa contigo</h3><p>Cria o teu primeiro evento e planeia datas, fechos diários de stock e equipa, sem limite de dias.</p><button class="secondary" data-action="new">+ Criar primeiro evento</button></div></section>
+<section class="panel"><div class="panel-head"><div><div class="panel-title">Preparação inicial</div><div class="panel-note">Configura o espaço ao teu ritmo</div></div><span style="font-size:11px;color:#999">0 de 4</span></div><div class="setup"><div class="setup-row"><span class="check">1</span><div><strong>Adicionar produtos</strong><small>Catálogo, unidades e stock inicial</small></div><span class="arrow">→</span></div><div class="setup-row"><span class="check">2</span><div><strong>Registar fornecedores</strong><small>Preços, propostas e faturas</small></div><span class="arrow">→</span></div><div class="setup-row"><span class="check">3</span><div><strong>Adicionar equipa</strong><small>Valores por hora e disponibilidade</small></div><span class="arrow">→</span></div><div class="setup-row"><span class="check">4</span><div><strong>Criar primeiro evento</strong><small>Datas, turnos e fechos diários</small></div><span class="arrow">→</span></div></div></section></div>
+<div class="feature-strip"><span class="spark">✳</span><div><strong>O teu analista SKURA, sempre à mão</strong><p>Quando os teus dados estiverem ligados, pergunta ao assistente sobre evolução de custos, melhores propostas, margens e desempenho dos eventos.</p></div></div>`}
+const pages={events:{title:'Eventos',sub:'Planeia cada festa: datas, operação diária, stock e equipa.',button:'Novo evento',empty:'Ainda não tens eventos',desc:'Cria um evento para organizar todos os dias de operação, os fechos de stock e os turnos da equipa num só lugar.'},stock:{title:'Produtos & stock',sub:'Catálogo, níveis de stock e histórico de custos de compra.',button:'Adicionar produto',empty:'O teu catálogo está pronto a começar',desc:'Adiciona os teus produtos, unidades e stock inicial. Depois acompanha entradas, consumo, preços e alertas de stock mínimo.'},suppliers:{title:'Fornecedores & faturas',sub:'Contactos, propostas comerciais, promoções e compras reais.',button:'Adicionar fornecedor',empty:'Ainda não há fornecedores registados',desc:'Regista fornecedores e acompanha propostas por produto. Importa faturas para leitura assistida ou introduz os valores manualmente.'},team:{title:'Equipa & horários',sub:'Pessoas, disponibilidade, turnos e custo de equipa por evento.',button:'Adicionar pessoa',empty:'A equipa começa contigo',desc:'Adiciona as pessoas da equipa e define o valor por hora. Depois agenda turnos em cada dia de evento e acompanha horas e custos.'},expenses:{title:'Despesas',sub:'Regista os custos gerais e associa despesas a um evento.',button:'Registar despesa',empty:'Ainda não há despesas registadas',desc:'Regista despesas manualmente ou associa-as a um evento para conheceres o custo real de cada operação.'},analysis:{title:'Análise & margens',sub:'Compara custos, preços e rentabilidade dos teus produtos e eventos.',button:'Ver produtos',empty:'A análise fica disponível com os teus dados',desc:'Quando registares preços de compra e preços de venda, poderás acompanhar margem bruta, evolução de custos e comparar propostas.'},settings:{title:'Definições',sub:'Configura categorias, unidades, alertas e preferências da operação.',button:'Configurar espaço',empty:'Configura a gestão à tua maneira',desc:'Define as categorias, unidades de medida, limites de stock, regras de custo e outras opções que se adaptam ao teu negócio.'}};
+function generic(key){const p=pages[key];let n=records[key]?.length||0;return `<div class="page-heading"><div><div class="eyebrow">SKURA BAR / GESTÃO</div><h1 class="section-title">${p.title}</h1><p>${p.sub}</p></div>${action(p.button)}</div>${key==='stock'?`<div class="feature-strip"><span class="spark">↗</span><div><strong>Histórico de preços e margem bruta</strong><p>Guarda propostas, promoções e preços pagos em fatura por produto e fornecedor. A análise compara os custos ao longo do tempo.</p></div></div>`:''}${key==='suppliers'?`<div class="feature-strip"><span class="spark">✳</span><div><strong>Faturas com leitura assistida</strong><p>Carrega uma fatura para extrair os dados, revê e confirma antes de atualizar o stock. Se a leitura não funcionar, podes registar tudo manualmente.</p></div></div>`:''}${key==='team'?`<div class="feature-strip"><span class="spark">◷</span><div><strong>Escalas ligadas aos eventos</strong><p>Define o valor por hora de cada pessoa e planeia os turnos por dia de evento. As horas e o custo ficam associados à festa.</p></div>`:''}<div class="table-wrap"><div class="table-top"><strong>${p.title} <span style="color:#aaa;font-weight:400">· ${n}</span></strong><input class="search" placeholder="Pesquisar" /></div><div class="table-empty"><div class="empty-art">${key==='events'?icons.calendar:icons.box}</div><h3>${n?p.title+' registados':p.empty}</h3><p>${p.desc}</p>${action(p.button)}</div></div>`}
+function assistant(){return `<div class="page-heading"><div><div class="eyebrow">SKURA BAR / INTELIGÊNCIA</div><h1 class="section-title">Assistente SKURA</h1><p>Faz perguntas sobre o teu negócio em linguagem natural.</p></div></div><div class="assistant-layout"><section class="panel chat-panel"><div class="chat-intro"><div class="assistant-mark">✳</div><h2>Como te posso ajudar?</h2><p>Pergunta sobre custos, stock, eventos, equipa ou margens. As respostas deverão basear-se nos dados que registares no SKURA BAR.</p></div><div class="suggestions"><button>Que produtos estão a ficar mais caros?</button><button>Qual foi a margem do último evento?</button><button>Que proposta compensa mais?</button></div><div class="chat-space"></div><div class="chat-disclaimer">Pré-visualização: o assistente ainda não está ligado à base de dados nem a um serviço de IA. As respostas reais só serão ativadas quando essa ligação for configurada.</div><form class="chat-compose" id="chatForm"><input id="chatInput" placeholder="Pergunta ao assistente SKURA..." /><button aria-label="Enviar pergunta">${icons.plus}</button></form></section><aside class="panel chat-side"><h3>O que poderás perguntar</h3><p>“Qual fornecedor teve o melhor preço para este produto nos últimos três meses?”</p><p>“Quanto custou a equipa no evento de agosto?”</p><p>“Que produtos têm margem abaixo do valor que defini?”</p><div class="divider"></div><h3>Respostas com contexto</h3><p>O assistente poderá consultar os dados da empresa e indicar os registos que sustentam cada resposta.</p></aside></div>`}
+function render(){document.getElementById('breadcrumb').textContent=labels[current];document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===current));content.innerHTML=current==='dashboard'?dashboard():current==='assistant'?assistant():generic(current);content.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>go(b.dataset.goto));content.querySelectorAll('[data-action="new"]').forEach(b=>b.onclick=()=>openModal(current==='dashboard'?'events':current));const f=document.getElementById('chatForm');if(f)f.onsubmit=e=>{e.preventDefault();document.getElementById('toast').textContent='O assistente será ligado quando configurarmos a ligação à IA e aos teus dados.';showToast()};}
+function go(page){current=page;render();document.getElementById('sidebar').classList.remove('open');window.scrollTo(0,0)}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)});document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>go(b.dataset.goto));
+document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+function openModal(type){let title=type==='events'?'Criar evento':type==='stock'?'Adicionar produto':type==='team'?'Adicionar pessoa':type==='suppliers'?'Adicionar fornecedor':type==='expenses'?'Registar despesa':'Adicionar registo';let fields=type==='events'?'<label>Nome do evento</label><input name="name" placeholder="Ex.: nome da festa" required><label>Local</label><input name="place" placeholder="Local do evento"><label>Data de início</label><input type="date" name="date">':type==='stock'?'<label>Nome do produto</label><input name="name" placeholder="Nome do produto" required><label>Unidade de medida</label><input name="unit" placeholder="Ex.: garrafa, kg, unidade"><label>Stock inicial</label><input type="number" name="qty" min="0" placeholder="0">':type==='team'?'<label>Nome</label><input name="name" placeholder="Nome da pessoa" required><label>Valor por hora (€)</label><input type="number" name="rate" min="0" step="0.01" placeholder="0,00">':type==='suppliers'?'<label>Nome do fornecedor</label><input name="name" placeholder="Nome da empresa" required><label>Contacto</label><input name="contact" placeholder="Email ou telefone">':type==='expenses'?'<label>Descrição</label><input name="name" placeholder="Descrição da despesa" required><label>Valor (€)</label><input type="number" name="amount" min="0" step="0.01" placeholder="0,00">':'<label>Nome</label><input name="name" required placeholder="Nome">';document.getElementById('modal').innerHTML=`<h2>${title}</h2><p>Os dados ficam guardados nesta pré-visualização local. A ligação à base de dados será configurada na implementação.</p><form id="modalForm">${fields}<div class="modal-actions"><button type="button" class="secondary" id="cancel">Cancelar</button><button class="primary" type="submit">Guardar</button></div></form>`;document.getElementById('modalBackdrop').classList.add('open');document.getElementById('cancel').onclick=closeModal;document.getElementById('modalForm').onsubmit=e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target));records[type]=records[type]||[];records[type].push(data);closeModal();render();showToast('Registo adicionado à pré-visualização')};}
+function closeModal(){document.getElementById('modalBackdrop').classList.remove('open')}document.getElementById('modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()};function showToast(msg){const t=document.getElementById('toast');if(msg)t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+const date=new Intl.DateTimeFormat('pt-PT',{weekday:'long',day:'numeric',month:'long'}).format(new Date());document.getElementById('date').textContent=date.charAt(0).toUpperCase()+date.slice(1);render();
+</script>
 </body>
 </html>
