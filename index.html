@@ -1,195 +1,131 @@
 <!doctype html>
 <html lang="pt-PT">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#171717">
-<title>SKURA BAR — Gestão</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#171717;--muted:#85827f;--line:#efedea;--canvas:#f8f7f5;--orange:#e7551d;--shadow:0 12px 36px #211a1410}
-*{box-sizing:border-box}
-body{margin:0;background:var(--canvas);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:14px}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;display:flex}
-.sidebar{width:252px;background:#191919;color:#fff;display:flex;flex-direction:column;padding:24px 16px 18px;position:fixed;inset:0 auto 0 0;z-index:5}
-.brand{height:68px;display:flex;align-items:center;gap:12px;padding:0 10px 18px;border-bottom:1px solid #ffffff16}
-.brand img{width:48px;height:48px;object-fit:contain;border-radius:12px;background:#fff}
-.brand-name{font-family:Manrope,sans-serif;font-weight:800;font-size:15px;letter-spacing:.11em}
-.brand-sub{color:#aaa;font-size:10px;letter-spacing:.18em;margin-top:3px}
-.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#777;margin:25px 11px 9px}
-.nav{display:grid;gap:4px}
-.nav button{border:0;background:none;color:#b9b7b5;text-align:left;display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;font-size:13px}
-.nav button:hover{background:#ffffff0c;color:#fff}
-.nav button.active{background:#e7551d;color:#fff;font-weight:600}
-.nav svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.nav .badge{margin-left:auto;background:#ffffff20;border-radius:10px;padding:2px 7px;font-size:10px}
-.sidebar-bottom{margin-top:auto}
-.assistant-teaser{background:#242321;border:1px solid #ffffff12;border-radius:12px;padding:14px;margin:14px 2px 18px}
-.teaser-top{display:flex;align-items:center;gap:9px;font-weight:600;font-size:12px}
-.spark{color:#ff946b;font-size:16px}
-.assistant-teaser p{font-size:11px;color:#aaa;line-height:1.55;margin:9px 0 12px}
-.teaser-link{background:none;border:0;color:#ff986f;padding:0;font-size:11px;font-weight:600}
-.profile{display:flex;align-items:center;gap:10px;border-top:1px solid #ffffff16;padding:16px 8px 0}
-.avatar{width:31px;height:31px;border-radius:50%;background:#373532;display:grid;place-items:center;font-size:11px;color:#fff}
-.profile strong{display:block;font-size:12px;font-weight:500}
-.profile small{color:#888;font-size:10px}
-.main{margin-left:252px;width:calc(100% - 252px)}
-.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 42px;position:sticky;top:0;z-index:4}
-.crumb{font-size:12px;color:var(--muted)}
-.crumb b{color:#242321;font-weight:600}
-.top-actions{display:flex;align-items:center;gap:17px}
-.today{font-size:12px;color:var(--muted)}
-.icon-btn{border:1px solid var(--line);background:#fff;width:35px;height:35px;border-radius:9px;display:grid;place-items:center;color:#65615c}
-.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7}
-.content{max-width:1320px;margin:auto;padding:36px 42px 58px}
-.welcome{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:27px}
-.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--orange);font-weight:700;margin-bottom:9px}
-.welcome h1{font-family:Manrope,sans-serif;font-size:28px;letter-spacing:-.04em;margin:0;font-weight:700}
-.welcome p{margin:8px 0 0;color:var(--muted);font-size:13px}
-.primary{border:0;background:var(--orange);color:#fff;font-weight:600;padding:11px 15px;border-radius:8px;box-shadow:0 5px 12px #e7551d20;display:inline-flex;align-items:center;gap:8px}
-.primary:hover{background:#cf4613}
-.primary svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
-.secondary{background:#fff;color:#393633;border:1px solid var(--line);padding:10px 13px;border-radius:8px;font-weight:600}
-.grid{display:grid;gap:14px}
-.stats{grid-template-columns:repeat(4,1fr);margin-bottom:20px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:17px 18px;min-height:107px}
-.stat-head{display:flex;justify-content:space-between;align-items:center;color:#706d69;font-size:11px}
-.stat-icon{width:29px;height:29px;border-radius:8px;background:#f6f4f1;display:grid;place-items:center;color:#716c66}
-.stat-icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
-.stat-value{font-family:Manrope,sans-serif;font-weight:700;font-size:23px;margin-top:10px;letter-spacing:-.04em}
-.stat-foot{font-size:10px;color:#9a9691;margin-top:2px}
-.overview{grid-template-columns:1.5fr 1fr;margin-bottom:16px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
-.panel-head{display:flex;justify-content:space-between;align-items:center;padding:17px 19px;border-bottom:1px solid #f3f1ef}
-.panel-title{font-family:Manrope,sans-serif;font-weight:700;font-size:13px}
-.panel-note{font-size:11px;color:var(--muted);margin-top:4px}
-.text-link{background:none;border:0;color:var(--orange);font-size:11px;font-weight:600;padding:4px}
-.empty{padding:29px 20px 31px;text-align:center}
-.empty-art{width:48px;height:48px;border-radius:14px;background:#fff2eb;color:var(--orange);display:grid;place-items:center;margin:0 auto 12px}
-.empty-art svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.empty h3{font-size:12px;margin:0 0 6px;font-weight:700}
-.empty p{font-size:11px;color:var(--muted);line-height:1.55;margin:0 auto 14px;max-width:290px}
-.empty .secondary{font-size:11px;padding:8px 11px}
-.setup{padding:17px 19px 18px}
-.setup-row{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #f3f1ef}
-.setup-row:last-child{border:0;padding-bottom:0}
-.check{width:20px;height:20px;border:1px solid #e4e0db;border-radius:50%;display:grid;place-items:center;color:#aaa;font-size:10px}
-.setup-row strong{display:block;font-size:11px;font-weight:600}
-.setup-row small{font-size:10px;color:var(--muted);display:block;margin-top:3px}
-.setup-row .arrow{margin-left:auto;color:#aaa}
-.section-title{font-family:Manrope,sans-serif;font-size:20px;letter-spacing:-.03em;margin:0}
-.page-heading{display:flex;justify-content:space-between;align-items:flex-start;margin:5px 0 24px}
-.page-heading p{font-size:12px;color:var(--muted);margin:7px 0 0}
-.table-wrap{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
-.table-top{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
-.table-top strong{font-size:12px}
-.search{border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-size:11px;min-width:180px;outline:none}
-.search:focus,input:focus{border-color:#e88e68}
-.table-empty{padding:58px 20px;text-align:center}
-.table-empty .empty-art{margin-bottom:13px}
-.table-empty h3{font-size:13px;margin:0 0 6px}
-.table-empty p{font-size:11px;max-width:350px;color:var(--muted);line-height:1.6;margin:0 auto 15px}
-.feature-strip{background:#fff8f3;border:1px solid #f5e4d9;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
-.feature-strip .spark{font-size:19px}
-.feature-strip strong{font-size:11px}
-.feature-strip p{font-size:11px;color:#77716b;margin:4px 0 0;line-height:1.5}
-.assistant-layout{display:grid;grid-template-columns:1fr 260px;gap:15px}
-.chat-panel{height:520px;display:flex;flex-direction:column}
-.chat-intro{padding:27px 28px 8px}
-.assistant-mark{width:40px;height:40px;display:grid;place-items:center;background:#fff0e8;color:var(--orange);border-radius:12px;font-size:20px;margin-bottom:16px}
-.chat-intro h2{font:700 18px Manrope,sans-serif;margin:0 0 7px}
-.chat-intro p{font-size:12px;line-height:1.6;color:var(--muted);max-width:440px;margin:0}
-.suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:16px 28px}
-.suggestions button{background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 11px;font-size:10px;color:#666}
-.chat-space{flex:1}
-.chat-disclaimer{margin:0 28px 12px;background:#fff8f3;padding:10px 12px;border-radius:7px;color:#82756c;font-size:10px;line-height:1.5}
-.chat-compose{display:flex;gap:8px;padding:0 19px 18px}
-.chat-compose input{flex:1;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:11px;outline:none}
-.chat-compose button{width:40px;border:0;border-radius:8px;background:var(--orange);color:#fff}
-.chat-compose button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
-.chat-side{padding:18px}
-.chat-side h3{font-size:12px;margin:0 0 10px}
-.chat-side p{font-size:10px;color:var(--muted);line-height:1.55;margin:0 0 15px}
-.chat-side .divider{height:1px;background:var(--line);margin:16px 0}
-.modal-backdrop{position:fixed;inset:0;background:#17171766;z-index:10;display:none;place-items:center;padding:20px}
-.modal-backdrop.open{display:grid}
-.modal{width:min(470px,100%);background:#fff;border-radius:14px;padding:23px;box-shadow:var(--shadow)}
-.modal h2{font:700 18px Manrope,sans-serif;margin:0}
-.modal p{color:var(--muted);font-size:12px;line-height:1.5}
-.modal label{font-size:11px;font-weight:600;display:block;margin:15px 0 6px}
-.modal input{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;outline:0;font-size:12px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
-.toast{position:fixed;right:25px;bottom:24px;background:#242321;color:#fff;padding:12px 16px;border-radius:9px;font-size:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.2s;z-index:20}
-.toast.show{opacity:1;transform:translateY(0)}
-.mobile-menu{display:none}
-@media(max-width:1050px){.sidebar{width:220px}.main{margin-left:220px;width:calc(100% - 220px)}.content{padding:30px 25px}.topbar{padding:0 25px}.stats{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:1fr}.assistant-layout{grid-template-columns:1fr}.chat-side{display:none}}
-@media(max-width:680px){.sidebar{width:260px;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.topbar{height:61px;padding:0 16px}.mobile-menu{display:grid}.crumb{margin-right:auto;margin-left:10px}.today{display:none}.content{padding:25px 16px 38px}.welcome{gap:12px}.welcome h1{font-size:23px}.welcome p{font-size:12px}.welcome>.primary{font-size:0;padding:10px}.welcome>.primary svg{width:17px;height:17px}.stats{gap:9px}.stat{padding:13px;min-height:99px}.stat-value{font-size:20px}.page-heading{gap:10px;align-items:center}.page-heading .primary{font-size:0;padding:10px}.page-heading .primary svg{width:17px;height:17px}.search{min-width:0;width:130px}.chat-panel{height:calc(100vh - 165px);min-height:460px}.chat-intro{padding:23px 19px 5px}.suggestions{padding:14px 19px}.chat-disclaimer{margin:0 19px 10px}.chat-compose{padding:0 13px 14px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#191919">
+  <title>SKURA BAR — Gestão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#1a1918;--muted:#817d78;--line:#ece9e5;--canvas:#f8f7f5;--orange:#e7551d;--soft:#fff2eb;--green:#23845e}
+    *{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:14px 'DM Sans',sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
+    .hidden{display:none!important}.auth-page{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(140deg,#191919 0 36%,#f8f7f5 36%)}.auth-card{width:min(420px,100%);background:#fff;padding:30px;border-radius:16px;box-shadow:0 22px 60px #0002}.auth-brand{display:flex;align-items:center;gap:13px;margin-bottom:24px}.auth-brand img{width:54px;height:54px;object-fit:contain;border-radius:12px}.auth-brand strong{font:800 16px Manrope,sans-serif;letter-spacing:.1em}.auth-brand small{display:block;color:#888;font-size:10px;letter-spacing:.15em;margin-top:4px}.auth-card h1{font:700 22px Manrope,sans-serif;margin:0 0 7px}.auth-card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 20px}.field{display:grid;gap:6px;margin:13px 0}.field label{font-weight:600;font-size:11px}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;padding:11px 12px;outline:none;background:#fff}.field input:focus,.field select:focus,.field textarea:focus{border-color:#e88e68}.auth-actions{display:grid;gap:9px;margin-top:18px}.primary{background:var(--orange);color:white;border:0;border-radius:8px;padding:11px 15px;font-weight:700}.primary:hover{background:#ca4615}.secondary{background:white;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-weight:600;color:#413e3a}.link-button{border:0;background:none;color:var(--orange);font-size:11px;font-weight:600;padding:8px}.error{background:#fff1f0;border:1px solid #f3d1cc;color:#a33a2d;padding:10px;border-radius:8px;font-size:11px;line-height:1.5;margin:12px 0}.notice{background:#fff8f1;border:1px solid #f1dfd0;color:#786c61;padding:11px;border-radius:8px;font-size:11px;line-height:1.5;margin:12px 0}
+    .app{min-height:100vh}.sidebar{width:248px;background:#191919;color:#fff;position:fixed;inset:0 auto 0 0;z-index:5;display:flex;flex-direction:column;padding:21px 15px 16px}.brand{display:flex;align-items:center;gap:11px;padding:0 9px 18px;border-bottom:1px solid #ffffff1c}.brand img{width:47px;height:47px;object-fit:contain;border-radius:11px;background:white}.brand strong{font:800 14px Manrope,sans-serif;letter-spacing:.1em}.brand small{display:block;color:#aaa;font-size:9px;letter-spacing:.16em;margin-top:3px}.nav-label{font-size:9px;color:#888;letter-spacing:.15em;text-transform:uppercase;margin:22px 11px 8px}.nav{display:grid;gap:4px}.nav button{display:flex;gap:11px;align-items:center;text-align:left;color:#c4c0bd;background:none;border:0;border-radius:8px;padding:10px 11px;font-size:12px}.nav button:hover{background:#ffffff10;color:white}.nav button.active{background:var(--orange);color:white;font-weight:700}.nav svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.side-bottom{margin-top:auto;border-top:1px solid #ffffff1c;padding:14px 8px 0}.side-bottom p{font-size:10px;color:#aaa;line-height:1.5}.side-bottom button{background:none;border:0;color:#ff9b73;padding:0;font-size:10px;font-weight:700}.main{margin-left:248px;min-height:100vh}.topbar{height:65px;display:flex;align-items:center;justify-content:space-between;background:white;border-bottom:1px solid var(--line);padding:0 34px;position:sticky;top:0;z-index:4}.crumb{font-size:11px;color:var(--muted)}.crumb b{color:var(--ink)}.top-actions{display:flex;align-items:center;gap:12px}.user-email{font-size:10px;color:var(--muted)}.content{max-width:1300px;margin:0 auto;padding:32px 34px 55px}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:22px}.eyebrow{font-size:9px;color:var(--orange);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px}.heading h1{font:700 25px Manrope,sans-serif;letter-spacing:-.04em;margin:0}.heading p{font-size:12px;color:var(--muted);margin:7px 0 0}.grid{display:grid;gap:13px}.stats{grid-template-columns:repeat(4,1fr);margin-bottom:17px}.stat,.panel,.table-wrap{background:white;border:1px solid var(--line);border-radius:11px}.stat{padding:15px 17px;min-height:99px}.stat-label{font-size:10px;color:#777}.stat-value{font:700 23px Manrope,sans-serif;margin-top:10px}.stat-hint{font-size:9px;color:#999;margin-top:3px}.overview{grid-template-columns:1.4fr 1fr}.panel{overflow:hidden}.panel-head{padding:15px 17px;border-bottom:1px solid #f0eeeb;display:flex;justify-content:space-between;align-items:center}.panel-head strong{font:700 12px Manrope,sans-serif}.panel-head small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.panel-body{padding:16px}.empty{padding:35px 20px;text-align:center;color:var(--muted);font-size:11px;line-height:1.55}.empty strong{display:block;color:var(--ink);font-size:12px;margin-bottom:5px}.setup-row{padding:11px 0;border-bottom:1px solid #f0eeeb;font-size:11px}.setup-row:last-child{border-bottom:0}.setup-row b{display:block;font-size:11px}.setup-row span{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+    .table-wrap{overflow:hidden}.table-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.table-head strong{font-size:11px}.table-head input{max-width:210px;border:1px solid var(--line);border-radius:7px;padding:8px;font-size:10px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:600px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid #f1efec;font-size:10px;vertical-align:middle}th{color:#777;font-weight:700;background:#fcfbfa}td .muted{color:#999}.small-button{border:1px solid var(--line);background:white;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:600}.tag{display:inline-block;border-radius:20px;background:#f4f1ee;padding:4px 7px;font-size:9px}.feature{background:#fff8f3;border:1px solid #f2e3d8;border-radius:9px;padding:12px 14px;margin-bottom:14px;font-size:10px;line-height:1.5;color:#776e67}.feature b{color:#332c28}.feature p{margin:4px 0 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .modal-bg{position:fixed;inset:0;background:#14121088;display:none;place-items:center;padding:16px;z-index:20}.modal-bg.open{display:grid}.modal{background:#fff;width:min(540px,100%);max-height:90vh;overflow:auto;border-radius:13px;padding:22px;box-shadow:0 20px 70px #0003}.modal h2{font:700 17px Manrope,sans-serif;margin:0}.modal p{font-size:11px;color:var(--muted);line-height:1.5}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.form-grid .wide{grid-column:1/-1}.form-grid input,.form-grid select,.form-grid textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:10px;font-size:11px}.form-grid label{font-size:10px;font-weight:700;margin:12px 0 5px;display:block}.checkline{display:flex;align-items:center;gap:8px;font-size:10px;margin-top:12px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.toast{position:fixed;right:22px;bottom:20px;background:#242321;color:white;border-radius:8px;padding:11px 14px;font-size:11px;z-index:30;display:none;max-width:min(440px,90vw)}.toast.show{display:block}.mobile-menu{display:none}
+    @media(max-width:980px){.sidebar{width:215px}.main{margin-left:215px}.content{padding:26px 22px}.topbar{padding:0 22px}.stats{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:1fr}}
+    @media(max-width:650px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:255px}.sidebar.open{transform:translateX(0)}.main{margin:0}.topbar{height:58px;padding:0 13px}.mobile-menu{display:inline-flex}.content{padding:22px 13px 35px}.heading h1{font-size:21px}.heading .primary{font-size:0;padding:10px}.heading .primary:after{content:'+';font-size:18px}.stats{gap:8px}.stat{padding:12px;min-height:90px}.stat-value{font-size:20px}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.user-email{display:none}}
+  </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar" id="sidebar">
-  <div class="brand"><img src="assets/SKURA%20BAR_LOGO@300x.png" alt="Logótipo SKURA BAR"><div><div class="brand-name">SKURA BAR</div><div class="brand-sub">GESTÃO DE EVENTOS</div></div></div>
-  <div class="nav-label">Operação</div>
-  <nav class="nav" id="nav">
-    <button class="active" data-page="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Visão geral</button>
-    <button data-page="events"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>Eventos</button>
-    <button data-page="stock"><svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></svg>Produtos & stock</button>
-    <button data-page="suppliers"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h1m4 0h1m-6 4h1m4 0h1m-5 7v-4h2v4"/></svg>Fornecedores & faturas</button>
-    <button data-page="team"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6m3-3h-6"/></svg>Equipa & horários</button>
-    <button data-page="expenses"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg>Despesas</button>
-  </nav>
-  <div class="nav-label">Gestão</div>
-  <nav class="nav">
-    <button data-page="analysis"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M8 15l4-4 3 3 6-7"/></svg>Análise & margens</button>
-    <button data-page="assistant"><svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="5"/></svg>Assistente IA<span class="badge">IA</span></button>
-    <button data-page="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.8Z" transform="translate(-1 -1) scale(1.08)"/></svg>Definições</button>
-  </nav>
-  <div class="sidebar-bottom"><div class="assistant-teaser"><div class="teaser-top"><span class="spark">✳</span> O teu assistente SKURA</div><p>Pergunta sobre stock, custos, eventos e margens com base nos teus dados.</p><button class="teaser-link" data-goto="assistant">Abrir assistente →</button></div><div class="profile"><div class="avatar">SB</div><div><strong>Área de gestão</strong><small>Administrador</small></div></div></div>
-</aside>
-<main class="main">
-  <header class="topbar"><button class="icon-btn mobile-menu" id="menuBtn" aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="crumb">SKURA BAR <span style="color:#ccc;margin:0 7px">/</span> <b id="breadcrumb">Visão geral</b></div><div class="top-actions"><span class="today" id="date"></span><button class="icon-btn" aria-label="Notificações"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button></div></header>
-  <div class="content" id="content"></div>
-</main>
+<div id="authPage" class="auth-page">
+  <section class="auth-card">
+    <div class="auth-brand"><img src="assets/SKURA%20BAR_LOGO@300x.png" alt="SKURA BAR"><div><strong>SKURA BAR</strong><small>GESTÃO DE EVENTOS</small></div></div>
+    <h1 id="authTitle">Entrar na tua conta</h1>
+    <p id="authIntro">Acede à gestão privada da tua empresa.</p>
+    <div id="authMessage"></div>
+    <form id="authForm">
+      <div class="field"><label for="authEmail">Email</label><input id="authEmail" type="email" required autocomplete="email" placeholder="o-teu@email.pt"></div>
+      <div class="field"><label for="authPassword">Palavra-passe</label><input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="Mínimo de 6 caracteres"></div>
+      <div class="auth-actions"><button class="primary" id="authSubmit">Entrar</button><button class="link-button" id="toggleAuth" type="button">Ainda não tens conta? Criar conta</button></div>
+    </form>
+  </section>
 </div>
-<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modal"></div></div>
-<div class="toast" id="toast"></div>
+<div id="setupPage" class="auth-page hidden">
+  <section class="auth-card">
+    <div class="auth-brand"><img src="assets/SKURA%20BAR_LOGO@300x.png" alt="SKURA BAR"><div><strong>SKURA BAR</strong><small>CONFIGURAÇÃO INICIAL</small></div></div>
+    <h1>Vamos configurar a empresa</h1>
+    <p>Este nome identifica a tua área de gestão. Os dados começam vazios e serão adicionados por ti.</p>
+    <div id="setupMessage"></div>
+    <form id="setupForm"><div class="field"><label for="orgName">Nome da empresa</label><input id="orgName" required placeholder="SKURA BAR"></div><button class="primary">Criar espaço de gestão</button></form>
+  </section>
+</div>
+<div id="app" class="app hidden">
+  <aside id="sidebar" class="sidebar">
+    <div class="brand"><img src="assets/SKURA%20BAR_LOGO@300x.png" alt="SKURA BAR"><div><strong>SKURA BAR</strong><small>GESTÃO DE EVENTOS</small></div></div>
+    <div class="nav-label">Operação</div>
+    <nav id="nav" class="nav">
+      <button data-page="dashboard" class="active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="11" width="7" height="10" rx="1"/><rect x="3" y="14" width="8" height="7" rx="1"/></svg>Visão geral</button>
+      <button data-page="events"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>Eventos</button>
+      <button data-page="products"><svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10"/></svg>Produtos & stock</button>
+      <button data-page="suppliers"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h1m4 0h1m-6 4h1m4 0h1"/></svg>Fornecedores</button>
+      <button data-page="invoices"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-4 2-4-2-3 2zM8 8h8M8 12h8M8 16h4"/></svg>Faturas</button>
+      <button data-page="team"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg>Equipa & horários</button>
+      <button data-page="expenses"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg>Despesas</button>
+      <button data-page="analysis"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M8 15l4-4 3 3 6-7"/></svg>Análise & margens</button>
+      <button data-page="assistant"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Assistente IA</button>
+    </nav>
+    <div class="side-bottom"><p>Os teus dados ficam guardados na base de dados da empresa.</p><button id="signOut">Terminar sessão</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div style="display:flex;align-items:center"><button class="secondary mobile-menu" id="menuBtn">☰</button><div class="crumb" style="margin-left:10px">SKURA BAR / <b id="breadcrumb">Visão geral</b></div></div><div class="top-actions"><span class="user-email" id="userEmail"></span></div></header>
+    <div id="content" class="content"></div>
+  </main>
+</div>
+<div id="modalBg" class="modal-bg"><section class="modal"><h2 id="modalTitle"></h2><p id="modalIntro"></p><form id="dataForm"><div id="formFields" class="form-grid"></div><div class="modal-actions"><button type="button" class="secondary" id="cancelModal">Cancelar</button><button class="primary">Guardar</button></div></form></section></div>
+<div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const icons={plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',box:'<svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10"/></svg>',calendar:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>'};
-const labels={dashboard:'Visão geral',events:'Eventos',stock:'Produtos & stock',suppliers:'Fornecedores & faturas',team:'Equipa & horários',expenses:'Despesas',analysis:'Análise & margens',assistant:'Assistente IA',settings:'Definições'};
-let current='dashboard';
-const records={events:[],stock:[],suppliers:[],team:[],expenses:[]};
-const content=document.getElementById('content');
-function action(label){return `<button class="primary" data-action="new">${icons.plus}${label}</button>`}
-function dashboard(){return `<div class="welcome"><div><div class="eyebrow">SKURA BAR · GESTÃO DE EVENTOS</div><h1>Bom dia. Vamos preparar o próximo evento.</h1><p>O teu espaço de gestão SKURA BAR, pronto para começares.</p></div>${action('Criar evento')}</div>
-<div class="grid stats"><div class="stat"><div class="stat-head">Eventos ativos <span class="stat-icon">${icons.calendar}</span></div><div class="stat-value">${records.events.length}</div><div class="stat-foot">Sem eventos registados</div></div><div class="stat"><div class="stat-head">Produtos no catálogo <span class="stat-icon">${icons.box}</span></div><div class="stat-value">${records.stock.length}</div><div class="stat-foot">O teu catálogo começa aqui</div></div><div class="stat"><div class="stat-head">A preparar <span class="stat-icon">◷</span></div><div class="stat-value">0</div><div class="stat-foot">Próximos eventos</div></div><div class="stat"><div class="stat-head">Margem bruta média <span class="stat-icon">↗</span></div><div class="stat-value">—</div><div class="stat-foot">Disponível após registar custos e vendas</div></div></div>
-<div class="grid overview"><section class="panel"><div class="panel-head"><div><div class="panel-title">Agenda de eventos</div><div class="panel-note">Eventos e respetivos dias de operação</div></div><button class="text-link" data-goto="events">Ver eventos →</button></div><div class="empty"><div class="empty-art">${icons.calendar}</div><h3>A agenda começa contigo</h3><p>Cria um evento e planeia datas, fechos diários de stock e equipa, sem limite de dias.</p><button class="secondary" data-action="new">+ Criar primeiro evento</button></div></section>
-<section class="panel"><div class="panel-head"><div><div class="panel-title">Preparação inicial</div><div class="panel-note">Configura o espaço ao teu ritmo</div></div><span style="font-size:11px;color:#999">0 de 4</span></div><div class="setup"><div class="setup-row"><span class="check">1</span><div><strong>Adicionar produtos</strong><small>Catálogo, unidades e stock inicial</small></div></div><div class="setup-row"><span class="check">2</span><div><strong>Registar fornecedores</strong><small>Preços, propostas e faturas</small></div></div><div class="setup-row"><span class="check">3</span><div><strong>Adicionar equipa</strong><small>Valores por hora e disponibilidade</small></div></div><div class="setup-row"><span class="check">4</span><div><strong>Criar primeiro evento</strong><small>Datas, turnos e fechos</small></div></div></div></section></div>
-<div class="feature-strip"><span class="spark">✳</span><div><strong>O teu analista SKURA</strong><p>Quando os teus dados estiverem ligados, pergunta sobre evolução de custos, propostas, margens e eventos.</p></div></div>`}
-const pages={
-events:{title:'Eventos',sub:'Planeia datas, operação diária, stock e equipa.',button:'Novo evento',empty:'Ainda não tens eventos',desc:'Cria um evento para organizar todos os dias de operação, fechos de stock e turnos da equipa.'},
-stock:{title:'Produtos & stock',sub:'Catálogo, níveis de stock e histórico de custos.',button:'Adicionar produto',empty:'O teu catálogo está pronto a começar',desc:'Adiciona produtos, unidades e stock inicial. Acompanha entradas, consumo, preços e alertas de stock mínimo.'},
-suppliers:{title:'Fornecedores & faturas',sub:'Contactos, propostas, promoções e compras.',button:'Adicionar fornecedor',empty:'Ainda não há fornecedores registados',desc:'Regista fornecedores, compara propostas e importa faturas para leitura assistida ou introdução manual.'},
-team:{title:'Equipa & horários',sub:'Pessoas, disponibilidade, turnos e custo por evento.',button:'Adicionar pessoa',empty:'A equipa começa contigo',desc:'Adiciona pessoas e valor por hora. Agenda turnos por dia de evento e acompanha horas e custos.'},
-expenses:{title:'Despesas',sub:'Custos gerais e despesas associadas a eventos.',button:'Registar despesa',empty:'Ainda não há despesas registadas',desc:'Regista despesas e associa-as a um evento para conheceres o custo real da operação.'},
-analysis:{title:'Análise & margens',sub:'Compara custos, preços e rentabilidade.',button:'Ver produtos',empty:'A análise fica disponível com os teus dados',desc:'Regista custos de compra e preços de venda para acompanhar margens, evolução de custos e propostas.'},
-settings:{title:'Definições',sub:'Categorias, unidades, alertas e preferências.',button:'Configurar espaço',empty:'Configura a gestão à tua maneira',desc:'Define categorias, unidades, limites de stock e outras opções da tua empresa.'}
+const SUPABASE_URL='https://sudtyjvcgszzwruegnja.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_oqZxUhcWTP_E6R7eQzuwJw_G6URlH9U';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let currentUser=null,organization=null,currentPage='dashboard',signupMode=false,lists={events:[],products:[],suppliers:[],invoices:[],team:[],expenses:[],offers:[]},editing=null;
+const $=id=>document.getElementById(id);
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const pageLabels={dashboard:'Visão geral',events:'Eventos',products:'Produtos & stock',suppliers:'Fornecedores',invoices:'Faturas',team:'Equipa & horários',expenses:'Despesas',analysis:'Análise & margens',assistant:'Assistente IA'};
+function toast(message){$('toast').textContent=message;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),3500)}
+function showAuthError(message){$('authMessage').innerHTML=`<div class="error">${escapeHtml(message)}</div>`}
+function setAuthMode(signup){signupMode=signup;$('authTitle').textContent=signup?'Criar conta SKURA BAR':'Entrar na tua conta';$('authIntro').textContent=signup?'Cria uma conta para começares a configurar a gestão da empresa.':'Acede à gestão privada da tua empresa.';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tens conta? Entrar':'Ainda não tens conta? Criar conta';$('authPassword').autocomplete=signup?'new-password':'current-password';$('authMessage').innerHTML=''}
+$('toggleAuth').onclick=()=>setAuthMode(!signupMode);
+$('authForm').onsubmit=async event=>{event.preventDefault();$('authMessage').innerHTML='';$('authSubmit').disabled=true;try{const email=$('authEmail').value.trim();const password=$('authPassword').value;if(signupMode){const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin}});if(error)throw error;if(!data.session){$('authMessage').innerHTML='<div class="notice">Conta criada. Confirma o email que recebeste e depois volta a esta página para entrar.</div>';return}await startApp(data.session.user)}else{const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;await startApp(data.user)}}catch(error){showAuthError(error.message||'Não foi possível entrar. Confirma o email e a palavra-passe.')}finally{$('authSubmit').disabled=false}};
+$('setupForm').onsubmit=async event=>{event.preventDefault();const name=$('orgName').value.trim();try{const {data,error}=await db.from('organizations').insert({name,owner_user_id:currentUser.id}).select('id,name').single();if(error)throw error;organization=data;await showApp();await loadData()}catch(error){$('setupMessage').innerHTML=`<div class="error">${escapeHtml(error.message)}</div>`}};
+async function startApp(user){currentUser=user;$('authPage').classList.add('hidden');$('setupPage').classList.add('hidden');$('app').classList.add('hidden');$('userEmail').textContent=user.email||'';try{const {data:owned,error:ownedError}=await db.from('organizations').select('id,name').eq('owner_user_id',user.id).limit(1).maybeSingle();if(ownedError)throw ownedError;if(owned){organization=owned;await showApp();await loadData();return}const {data:membership,error:memberError}=await db.from('organization_members').select('organization_id').eq('user_id',user.id).limit(1).maybeSingle();if(memberError)throw memberError;if(membership){const {data:org,error:orgError}=await db.from('organizations').select('id,name').eq('id',membership.organization_id).single();if(orgError)throw orgError;organization=org;await showApp();await loadData();return}$('setupPage').classList.remove('hidden')}catch(error){$('authPage').classList.remove('hidden');showAuthError(error.message||'Não foi possível carregar a empresa.')}}
+async function showApp(){$('authPage').classList.add('hidden');$('setupPage').classList.add('hidden');$('app').classList.remove('hidden');$('breadcrumb').textContent=organization.name}
+async function loadTable(table,order='created_at'){const {data,error}=await db.from(table).select('*').eq('organization_id',organization.id).order(order,{ascending:false});if(error)throw error;return data||[]}
+async function loadData(){try{[lists.events,lists.products,lists.suppliers,lists.invoices,lists.team,lists.expenses,lists.offers]=await Promise.all([loadTable('events','starts_on'),loadTable('products'),loadTable('suppliers'),loadTable('supplier_invoices','invoice_date'),loadTable('team_members'),loadTable('expenses','expense_date'),loadTable('supplier_offers','recorded_at')]);render()}catch(error){toast('Erro ao carregar dados: '+error.message)}}
+function money(value){return value==null?'—':new Intl.NumberFormat('pt-PT',{style:'currency',currency:'EUR'}).format(Number(value))}
+function fmtDate(value){if(!value)return'—';return new Intl.DateTimeFormat('pt-PT').format(new Date(value+'T12:00:00'))}
+function tableHtml(headers,rows,emptyText){if(!rows.length)return `<div class="empty"><strong>${escapeHtml(emptyText)}</strong>Os registos que adicionares aparecerão aqui.</div>`;return `<div class="table-scroll"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}<th></th></tr></thead><tbody>${rows.map(row=>`<tr>${row.cells.map(v=>`<td>${v}</td>`).join('')}<td><button class="small-button" data-edit="${row.type}" data-id="${row.id}">Editar</button></td></tr>`).join('')}</tbody></table></div>`}
+function heading(title,description,buttonText,type){return `<div class="heading"><div><div class="eyebrow">SKURA BAR / GESTÃO</div><h1>${title}</h1><p>${description}</p></div><button class="primary" data-new="${type}">+ ${buttonText}</button></div>`}
+function renderDashboard(){return `<div class="heading"><div><div class="eyebrow">ÁREA DE GESTÃO</div><h1>Olá. Vamos preparar o próximo evento.</h1><p>${escapeHtml(organization.name)} · os dados são guardados na tua base de dados.</p></div><button class="primary" data-new="events">+ Criar evento</button></div><div class="grid stats"><div class="stat"><div class="stat-label">Eventos</div><div class="stat-value">${lists.events.length}</div><div class="stat-hint">Registados na empresa</div></div><div class="stat"><div class="stat-label">Produtos</div><div class="stat-value">${lists.products.length}</div><div class="stat-hint">No catálogo</div></div><div class="stat"><div class="stat-label">Fornecedores</div><div class="stat-value">${lists.suppliers.length}</div><div class="stat-hint">Registados</div></div><div class="stat"><div class="stat-label">Equipa</div><div class="stat-value">${lists.team.length}</div><div class="stat-hint">Pessoas registadas</div></div></div><div class="grid overview"><section class="panel"><div class="panel-head"><div><strong>Próximos eventos</strong><small>Agenda da operação</small></div><button class="small-button" data-goto="events">Ver todos</button></div>${lists.events.length?tableHtml(['Evento','Local','Início','Fim','Estado'],lists.events.slice(0,5).map(e=>({type:'events',id:e.id,cells:[escapeHtml(e.name),escapeHtml(e.venue||'—'),fmtDate(e.starts_on),fmtDate(e.ends_on),escapeHtml(e.status)]})),'Ainda não há eventos'): '<div class="empty"><strong>A agenda começa contigo</strong>Cria um evento para planear datas, dias de operação e equipa.</div>'}</section><section class="panel"><div class="panel-head"><div><strong>Preparação inicial</strong><small>Configura ao teu ritmo</small></div></div><div class="panel-body"><div class="setup-row"><b>1 · Produtos e stock</b><span>Catálogo e stock inicial</span></div><div class="setup-row"><b>2 · Fornecedores e faturas</b><span>Preços e compras</span></div><div class="setup-row"><b>3 · Equipa</b><span>Valores por hora</span></div><div class="setup-row"><b>4 · Eventos</b><span>Datas e operação</span></div></div></section></div>`}
+function renderList(page){if(page==='events')return heading('Eventos','Planeia datas, operação diária, stock e equipa.','Novo evento','events')+tableHtml(['Evento','Local','Início','Fim','Estado'],lists.events.map(e=>({type:'events',id:e.id,cells:[escapeHtml(e.name),escapeHtml(e.venue||'—'),fmtDate(e.starts_on),fmtDate(e.ends_on),`<span class="tag">${escapeHtml(e.status)}</span>`]})),'Ainda não tens eventos');
+if(page==='products')return heading('Produtos & stock','Catálogo, quantidades, custos e preços de venda.','Adicionar produto','products')+'<div class="feature"><b>Margem estimada</b><p>A margem apresentada na análise usa o custo e o preço registados, sem tratamento de IVA nesta etapa.</p></div>'+tableHtml(['Produto','Categoria','Unidade','Stock','Mínimo','Custo','Venda'],lists.products.map(p=>({type:'products',id:p.id,cells:[escapeHtml(p.name),escapeHtml(p.category||'—'),escapeHtml(p.unit||'—'),escapeHtml(p.current_stock),escapeHtml(p.minimum_stock),money(p.purchase_cost),money(p.sale_price)]})),'O catálogo está vazio');
+if(page==='suppliers')return heading('Fornecedores','Contactos e informação comercial.','Adicionar fornecedor','suppliers')+tableHtml(['Fornecedor','Contacto','Email','Telefone','NIF'],lists.suppliers.map(s=>({type:'suppliers',id:s.id,cells:[escapeHtml(s.name),escapeHtml(s.contact_name||'—'),escapeHtml(s.email||'—'),escapeHtml(s.phone||'—'),escapeHtml(s.tax_number||'—')]})),'Ainda não tens fornecedores');
+if(page==='invoices')return heading('Faturas','Regista faturas manualmente. A leitura OCR será ligada numa etapa seguinte.','Registar fatura','invoices')+'<div class="feature"><b>OCR ainda não ligado</b><p>Por agora, podes guardar o cabeçalho da fatura manualmente. A leitura automática e as linhas de produtos serão acrescentadas depois.</p></div>'+tableHtml(['N.º fatura','Fornecedor','Data','Total','Método','Estado'],lists.invoices.map(i=>({type:'invoices',id:i.id,cells:[escapeHtml(i.invoice_number||'—'),escapeHtml(lists.suppliers.find(s=>s.id===i.supplier_id)?.name||'—'),fmtDate(i.invoice_date),money(i.total_amount),escapeHtml(i.input_method),escapeHtml(i.status)]})),'Ainda não há faturas');
+if(page==='team')return heading('Equipa & horários','Pessoas e valor por hora. A calendarização dos turnos será ligada aos eventos na próxima etapa.','Adicionar pessoa','team')+tableHtml(['Nome','Email','Telefone','Valor por hora','Estado'],lists.team.map(t=>({type:'team',id:t.id,cells:[escapeHtml(t.full_name),escapeHtml(t.email||'—'),escapeHtml(t.phone||'—'),money(t.hourly_rate),t.active?'Ativo':'Inativo']})),'Ainda não há pessoas registadas');
+if(page==='expenses')return heading('Despesas','Regista custos gerais e associa-os a eventos.','Registar despesa','expenses')+tableHtml(['Descrição','Categoria','Data','Valor'],lists.expenses.map(e=>({type:'expenses',id:e.id,cells:[escapeHtml(e.description),escapeHtml(e.category||'—'),fmtDate(e.expense_date),money(e.amount)]})),'Ainda não há despesas');
+if(page==='analysis'){const rows=lists.products.filter(p=>p.sale_price!=null&&p.purchase_cost!=null).map(p=>{const margin=Number(p.sale_price)-Number(p.purchase_cost);const percent=Number(p.sale_price)?margin/Number(p.sale_price)*100:0;return{type:'products',id:p.id,cells:[escapeHtml(p.name),money(p.purchase_cost),money(p.sale_price),money(margin),percent.toFixed(1)+'%']}});return `<div class="heading"><div><div class="eyebrow">SKURA BAR / GESTÃO</div><h1>Análise & margens</h1><p>Compara o custo de compra com o preço de venda registado.</p></div></div><div class="feature"><b>Margem bruta estimada</b><p>Calculada como preço de venda menos custo de compra; a percentagem é sobre o preço de venda. Confirma que os dois valores usam o mesmo critério de IVA.</p></div>`+tableHtml(['Produto','Custo unitário','Preço de venda','Margem por unidade','Margem %'],rows,'Ainda não há produtos com custo e preço de venda');
+}
+if(page==='assistant')return `<div class="heading"><div><div class="eyebrow">SKURA BAR / INTELIGÊNCIA</div><h1>Assistente SKURA</h1><p>Perguntas sobre stock, custos, eventos e margens.</p></div></div><div class="panel"><div class="panel-body"><div class="notice"><b>Assistente ainda não ligado.</b><br>Primeiro estamos a ligar e confirmar os dados da empresa. Depois conectamos o serviço de IA de forma segura, sem colocar chaves privadas no navegador.</div><p style="font-size:11px;color:#777">Exemplos: “Que produtos estão a ficar mais caros?” · “Qual foi a margem deste evento?”</p></div></div>`;
+return ''}
+function render(){ $('breadcrumb').textContent=pageLabels[currentPage];document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));$('content').innerHTML=currentPage==='dashboard'?renderDashboard():renderList(currentPage);$('content').querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>go(b.dataset.goto));$('content').querySelectorAll('[data-new]').forEach(b=>b.onclick=()=>openForm(b.dataset.new));$('content').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editRow(b.dataset.edit,b.dataset.id))}
+function go(page){currentPage=page;render();$('sidebar').classList.remove('open');window.scrollTo(0,0)}
+$('nav').onclick=event=>{const button=event.target.closest('[data-page]');if(button)go(button.dataset.page)};
+$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');
+$('signOut').onclick=async()=>{await db.auth.signOut();organization=null;currentUser=null;$('app').classList.add('hidden');$('authPage').classList.remove('hidden')};
+
+const defs={
+events:{table:'events',title:'Evento',fields:[['name','Nome do evento','text',true],['venue','Local','text'],['starts_on','Data de início','date'],['ends_on','Data de fim','date'],['status','Estado','select',false,['planned','active','completed','cancelled']],['notes','Notas','textarea']]},
+products:{table:'products',title:'Produto',fields:[['name','Nome do produto','text',true],['category','Categoria','text'],['unit','Unidade de medida','text'],['current_stock','Stock inicial/atual','number'],['minimum_stock','Stock mínimo','number'],['purchase_cost','Custo unitário (€)','number'],['sale_price','Preço de venda (€)','number'],['active','Produto ativo','checkbox'],['notes','Notas','textarea']]},
+suppliers:{table:'suppliers',title:'Fornecedor',fields:[['name','Nome do fornecedor','text',true],['contact_name','Pessoa de contacto','text'],['email','Email','email'],['phone','Telefone','text'],['tax_number','NIF','text'],['active','Fornecedor ativo','checkbox'],['notes','Notas','textarea']]},
+team:{table:'team_members',title:'Pessoa da equipa',fields:[['full_name','Nome completo','text',true],['email','Email','email'],['phone','Telefone','text'],['hourly_rate','Valor por hora (€)','number'],['active','Pessoa ativa','checkbox'],['notes','Notas','textarea']]},
+expenses:{table:'expenses',title:'Despesa',fields:[['description','Descrição','text',true],['category','Categoria','text'],['amount','Valor (€)','number',true],['expense_date','Data','date'],['event_id','Evento associado','event'],['notes','Notas','textarea']]},
+invoices:{table:'supplier_invoices',title:'Fatura',fields:[['supplier_id','Fornecedor','supplier'],['invoice_number','Número da fatura','text'],['invoice_date','Data da fatura','date'],['total_amount','Total (€)','number'],['input_method','Método','select',false,['manual','ocr']],['status','Estado','select',false,['draft','review','confirmed','cancelled']],['notes','Notas','textarea']]}
 };
-function generic(key){const p=pages[key];const n=records[key]?.length||0;let extra='';if(key==='stock')extra='<div class="feature-strip"><span class="spark">↗</span><div><strong>Histórico de preços e margem bruta</strong><p>Guarda propostas, promoções e preços pagos em fatura por produto e fornecedor.</p></div></div>';if(key==='suppliers')extra='<div class="feature-strip"><span class="spark">✳</span><div><strong>Faturas com leitura assistida</strong><p>Revê os dados extraídos antes de atualizar o stock. Também podes introduzir os valores manualmente.</p></div></div>';if(key==='team')extra='<div class="feature-strip"><span class="spark">◷</span><div><strong>Escalas ligadas aos eventos</strong><p>Define o valor por hora e planeia turnos por dia de evento.</p></div></div>';return `<div class="page-heading"><div><div class="eyebrow">SKURA BAR / GESTÃO</div><h1 class="section-title">${p.title}</h1><p>${p.sub}</p></div>${action(p.button)}</div>${extra}<div class="table-wrap"><div class="table-top"><strong>${p.title} · ${n}</strong><input class="search" placeholder="Pesquisar"></div><div class="table-empty"><div class="empty-art">${key==='events'?icons.calendar:icons.box}</div><h3>${n?p.title+' registados':p.empty}</h3><p>${p.desc}</p>${action(p.button)}</div></div>`}
-function assistant(){return `<div class="page-heading"><div><div class="eyebrow">SKURA BAR / INTELIGÊNCIA</div><h1 class="section-title">Assistente SKURA</h1><p>Faz perguntas sobre o teu negócio em linguagem natural.</p></div></div><div class="assistant-layout"><section class="panel chat-panel"><div class="chat-intro"><div class="assistant-mark">✳</div><h2>Como te posso ajudar?</h2><p>Pergunta sobre custos, stock, eventos, equipa ou margens. As respostas deverão basear-se nos dados que registares no SKURA BAR.</p></div><div class="suggestions"><button>Que produtos estão a ficar mais caros?</button><button>Qual foi a margem do último evento?</button><button>Que proposta compensa mais?</button></div><div class="chat-space"></div><div class="chat-disclaimer">Pré-visualização: o assistente ainda não está ligado à base de dados nem a um serviço de IA.</div><form class="chat-compose" id="chatForm"><input id="chatInput" placeholder="Pergunta ao assistente SKURA..."><button aria-label="Enviar pergunta">${icons.plus}</button></form></section><aside class="panel chat-side"><h3>O que poderás perguntar</h3><p>“Qual fornecedor teve o melhor preço nos últimos três meses?”</p><p>“Quanto custou a equipa neste evento?”</p><p>“Que produtos têm margem abaixo do valor que defini?”<div class="divider"></div><h3>Respostas com contexto</h3><p>O assistente poderá consultar os dados e indicar os registos que sustentam cada resposta.</p></aside></div>`}
-function render(){document.getElementById('breadcrumb').textContent=labels[current];document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===current));content.innerHTML=current==='dashboard'?dashboard():current==='assistant'?assistant():generic(current);content.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>go(b.dataset.goto));content.querySelectorAll('[data-action="new"]').forEach(b=>b.onclick=()=>openModal(current==='dashboard'?'events':current));const form=document.getElementById('chatForm');if(form)form.onsubmit=e=>{e.preventDefault();showToast('O assistente será ligado à IA e aos teus dados numa etapa seguinte.')}}
-function go(page){current=page;render();document.getElementById('sidebar').classList.remove('open');window.scrollTo(0,0)}
-document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)});
-document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
-function openModal(type){const titles={events:'Criar evento',stock:'Adicionar produto',team:'Adicionar pessoa',suppliers:'Adicionar fornecedor',expenses:'Registar despesa'};let fields='';if(type==='events')fields='<label>Nome do evento</label><input name="name" placeholder="Nome da festa" required><label>Local</label><input name="place" placeholder="Local do evento"><label>Data de início</label><input type="date" name="date">';else if(type==='stock')fields='<label>Nome do produto</label><input name="name" placeholder="Nome do produto" required><label>Unidade de medida</label><input name="unit" placeholder="Ex.: garrafa, kg, unidade"><label>Stock inicial</label><input type="number" name="qty" min="0" placeholder="0">';else if(type==='team')fields='<label>Nome</label><input name="name" placeholder="Nome da pessoa" required><label>Valor por hora (€)</label><input type="number" name="rate" min="0" step="0.01" placeholder="0,00">';else if(type==='suppliers')fields='<label>Nome do fornecedor</label><input name="name" placeholder="Nome da empresa" required><label>Contacto</label><input name="contact" placeholder="Email ou telefone">';else fields='<label>Descrição</label><input name="name" placeholder="Descrição" required><label>Valor (€)</label><input type="number" name="amount" min="0" step="0.01" placeholder="0,00">';document.getElementById('modal').innerHTML=`<h2>${titles[type]||'Adicionar registo'}</h2><p>Pré-visualização local. A ligação à base de dados será configurada depois.</p><form id="modalForm">${fields}<div class="modal-actions"><button type="button" class="secondary" id="cancel">Cancelar</button><button class="primary" type="submit">Guardar</button></div></form>`;document.getElementById('modalBackdrop').classList.add('open');document.getElementById('cancel').onclick=closeModal;document.getElementById('modalForm').onsubmit=e=>{e.preventDefault();records[type].push(Object.fromEntries(new FormData(e.target)));closeModal();render();showToast('Registo adicionado nesta pré-visualização')}}
-function closeModal(){document.getElementById('modalBackdrop').classList.remove('open')}
-document.getElementById('modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()}
-function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
-const date=new Intl.DateTimeFormat('pt-PT',{weekday:'long',day:'numeric',month:'long'}).format(new Date());document.getElementById('date').textContent=date.charAt(0).toUpperCase()+date.slice(1);render();
+function inputFor(field,current={}){const [name,label,type,required,options]=field;const value=current[name]??'';let html='';if(type==='textarea')html=`<textarea name="${name}" rows="3">${escapeHtml(value)}</textarea>`;else if(type==='select')html=`<select name="${name}">${options.map(v=>`<option value="${v}" ${value===v?'selected':''}>${escapeHtml(v)}</option>`).join('')}</select>`;else if(type==='event')html=`<select name="${name}"><option value="">Sem evento associado</option>${lists.events.map(e=>`<option value="${e.id}" ${value===e.id?'selected':''}>${escapeHtml(e.name)}</option>`).join('')}</select>`;else if(type==='supplier')html=`<select name="${name}"><option value="">Selecionar fornecedor</option>${lists.suppliers.map(s=>`<option value="${s.id}" ${value===s.id?'selected':''}>${escapeHtml(s.name)}</option>`).join('')}</select>`;else if(type==='checkbox')html=`<label class="checkline"><input type="checkbox" name="${name}" ${current[name]===false?'':'checked'}> ${label}</label>`;else html=`<input name="${name}" type="${type}" ${type==='number'?'step="0.001"':''} value="${escapeHtml(value)}" ${required?'required':''}>`;if(type==='checkbox')return `<div class="wide">${html}</div>`;return `<div class="${type==='textarea'?'wide':''}"><label>${label}${required?' *':''}</label>${html}</div>`}
+function openForm(type,row=null){const def=defs[type];if(!def)return;editing=row?{type,id:row.id}:null;$('modalTitle').textContent=(row?'Editar ':'Adicionar ')+def.title.toLowerCase();$('modalIntro').textContent='As alterações são guardadas no Supabase.';$('formFields').innerHTML=def.fields.map(f=>inputFor(f,row||{})).join('');$('modalBg').classList.add('open')}
+function editRow(type,id){const row=lists[type].find(item=>item.id===id);if(row)openForm(type,row)}
+$('cancelModal').onclick=()=>$('modalBg').classList.remove('open');
+$('modalBg').onclick=event=>{if(event.target===$('modalBg'))$('modalBg').classList.remove('open')};
+$('dataForm').onsubmit=async event=>{event.preventDefault();const type=editing?.type||Object.keys(defs).find(k=>defs[k].table===currentTable());const def=defs[type];if(!def)return;const form=new FormData(event.target);const payload={organization_id:organization.id};for(const [name,,typeField] of def.fields){if(typeField==='checkbox')payload[name]=form.has(name);else{let value=form.get(name);if(value==='')value=null;if(typeField==='number'&&value!==null)value=Number(value);payload[name]=value}}try{let result;if(editing)result=await db.from(def.table).update(payload).eq('id',editing.id).eq('organization_id',organization.id);else result=await db.from(def.table).insert(payload);if(result.error)throw result.error;
+if(type==='events'&&!editing&&payload.starts_on){const start=new Date(payload.starts_on+'T12:00:00Z');const end=new Date((payload.ends_on||payload.starts_on)+'T12:00:00Z');const days=[];for(let d=new Date(start);d<=end;d.setUTCDate(d.getUTCDate()+1))days.push({organization_id:organization.id,event_id:(await db.from('events').select('id').eq('organization_id',organization.id).eq('name',payload.name).order('created_at',{ascending:false}).limit(1).single()).data.id,operation_date:d.toISOString().slice(0,10)});if(days.length){const dayResult=await db.from('event_days').insert(days);if(dayResult.error)throw dayResult.error}}
+$('modalBg').classList.remove('open');editing=null;await loadData();toast('Registo guardado no Supabase.')}catch(error){toast('Não foi possível guardar: '+error.message)}};
+function currentTable(){return defs[currentPage]?.table}
+$('authPage').classList.remove('hidden');
+db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'&&session?.user)startApp(session.user)});
+(async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user)await startApp(session.user)})();
 </script>
 </body>
 </html>
